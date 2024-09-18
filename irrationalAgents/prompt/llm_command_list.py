@@ -1,7 +1,9 @@
 import os
 from openai import OpenAI
 import json
+import logging
 
+logger = logging.getLogger(__name__)
 api_key = os.getenv('OPENAI_API_KEY')
 client = OpenAI(api_key=api_key)
 
@@ -55,11 +57,32 @@ def generate_plan(agent_name, agent_profile, current_emotion, recent_events, cur
         print("Error: Invalid JSON format in response.")
         return None
 
+def generate_daily_plan(agent_name, agent_profile, current_emotion, previous, current_date):
+    with open('irrationalAgents/prompt/prompt_templates/daily_plan_prompt.txt', 'r') as file:
+        prompt_template = file.read()
+
+    prompt = prompt_template.format(
+        agent_name=agent_name,
+        agent_profile=agent_profile,
+        current_emotion=current_emotion,
+        previous=previous,
+        current_date=current_date
+    )
+
+    system_content = "You are an AI assistant tasked with generating a character's daily schedule by combining given information."
+    response = generative_agent(system_content, prompt)
+    logger.info(f"daily plan response: {response}")
+    try:
+        parsed_response = json.loads(response)
+        return parsed_response
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON format in response.")
+        return None
 
 def generate_conversation(agent_name, agent_profile, current_emotion, plan, recent_events, current_time, current_date):
     with open('irrationalAgents/prompt/prompt_templates/conv_prompt.txt', 'r') as file:
         prompt_template = file.read()
-    
+    # here may stuck in infinite conversation loop
     prompt = prompt_template.format(
         agent_name=agent_name,
         agent_profile=agent_profile,

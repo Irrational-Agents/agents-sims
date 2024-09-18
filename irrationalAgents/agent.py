@@ -1,7 +1,6 @@
-
-
-
 import json
+
+import logging
 
 from irrationalAgents.memory_modules.long_term_memory import *
 from irrationalAgents.memory_modules.short_term_memory import *
@@ -14,6 +13,7 @@ from irrationalAgents.agents_modules.personality.cognition import *
 from irrationalAgents.agents_modules.personality.emotion import *
 from irrationalAgents.agents_modules.personality.personality import *
 
+logger = logging.getLogger(__name__)
 class Agent:
     def __init__(self, basic_info, memory_folder_path=False):
         self.basic_info = basic_info

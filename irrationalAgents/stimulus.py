@@ -12,6 +12,7 @@ def stimulus(agent, events):
     
 
     for event in events:
+        # todo: here change to a dict or others to connect event and description
         description = f"Kenta Takahashi chatted with Sato Sakura:'{event}'"
         percept_events_list.append(description)
 

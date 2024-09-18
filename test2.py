@@ -10,7 +10,7 @@ def main():
         meta = json.load(f)
     
     
-    sakura = create_agent("sakura_sato")
+    sakura = create_agent(input("name: "))
     curr_time = datetime.strptime(f"{meta['start_date']} {meta['curr_time']}", "%Y-%m-%d %H:%M")
     
     # 動作確認
