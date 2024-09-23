@@ -3,21 +3,14 @@ Agent profile: {agent_profile}
 Current emotion: {current_emotion}
 Previously: {previous}
 
-Based on the above information, generate a detailed daily plan for {agent_name}, starting at 6 a.m. The plan should:
-- Reflect {agent_name}’s work, personal life, and social interactions.
+Based on the above information, generate a detailed daily routine plans for {agent_name}, day plans need starting at 00:00. The plan should:
+- Reflect {agent_name}’s work, personal life, and socizhaal interactions.
 - Include basic daily routines such as waking up, personal hygiene, meals, and leisure activities.
-- Ensure that each activity lasts at least 30 minutes or more, without getting into excessive detail.
+- Each activity lasts at least 15mins or more, without getting into excessive details, covering wake up and sleep, no duplicate time, day plans need starting at 00:00.
 - Strike a balance between productivity and rest, ensuring time is dedicated to work, hobbies, and relaxation.
-
-The plan should include the following:
-1. Basic daily tasks such as waking up, breakfast, hygiene, and relaxing moments like watching TV.
-2. Professional tasks related to {agent_name}’s career goals and skill set.
-3. Time for hobbies or personal interests such as physical activities, creative work, or relaxation.
-4. Social interactions with important relationships (friends, partners, or collaborators).
-5. Breaks and relaxation periods for rest and rejuvenation.
 
 Make sure the plan accounts for {agent_name}’s emotional state, previously(if has), and their long-term and mid-term goals.
 
 Please format your response as a JSON list of strings, like below. Do not include any additional text, markdown formatting, or explanations outside the JSON array:
 
-[{{"time": "07:00","moccupying": 1,"activity": "Wake up and feed Bobo and Langley"}}]
+[{{"time": "16:00","activity": "an activity example"}}]

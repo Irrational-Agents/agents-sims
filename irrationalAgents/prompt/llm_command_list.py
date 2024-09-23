@@ -27,19 +27,20 @@ def generative_agent(system_content, user_content, max_retries=3):
         print(f"Error in generative_agent: {e}")
         return None
 
-def generate_plan(agent_name, agent_profile, current_emotion, recent_events, current_time, current_date):
+def generate_plan(agent_name, agent_profile, current_emotion, recent_events, current_time, current_date, daily_plan=None):
     with open('irrationalAgents/prompt/prompt_templates/plan_prompt.txt', 'r') as file:
         prompt_template1 = file.read()
     with open('irrationalAgents/prompt/prompt_templates/action_prompt.txt', 'r') as file:
         prompt_template2 = file.read()
-    
+
     prompt1 = prompt_template1.format(
         agent_name=agent_name,
         agent_profile=agent_profile,
         current_emotion=current_emotion,
         recent_events=recent_events,
         current_time=current_time,
-        current_date=current_date
+        current_date=current_date,
+        daily_plan=daily_plan
     )
     
     system_content = "You are an AI assistant tasked with creating plans based on recent events and current context."

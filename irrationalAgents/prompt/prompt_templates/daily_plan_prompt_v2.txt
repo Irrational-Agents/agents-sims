@@ -20,3 +20,11 @@ The plan should consider:
 7. Breaks and Rest: Ensure sufficient downtime to recharge based on the emotional state and personality traits.
 
 Make sure the plan takes into account {agent_name}’s current emotional state, recent events, and their personality traits, helping them progress toward their long-term and mid-term goals while keeping a balance between work, social life, and personal time.
+
+
+The plan should include the following:
+1. Basic daily tasks such as waking up, breakfast, hygiene, and relaxing moments, also the time to sleep.
+2. Professional tasks related to {agent_name}’s career goals and skill set.
+3. Time for hobbies or personal interests such as physical activities, creative work, or relaxation.
+4. Social interactions with important relationships (friends, partners, or collaborators).
+5. Breaks and relaxation periods for rest and rejuvenation.

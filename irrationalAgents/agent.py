@@ -67,6 +67,7 @@ class Agent:
         new_day = False
         if not self.short_memory.curr_datetime: 
             new_day = "First day"
+            self.short_memory.short_memory = []
         elif (self.short_memory.curr_datetime.strftime('%A %B %d')
             != self.short_memory.curr_datetime.strftime('%A %B %d')):
             new_day = "New day"
@@ -81,7 +82,8 @@ class Agent:
         elif stimulus == "sys1":
             plan_list = self.plan(new_day)
             best_plan = self.plan_evaluation(plan_list)
-            self.action(best_plan)
+            self.short_memory.save(self.short_memory)
+            #self.action(best_plan)
 
         
 
