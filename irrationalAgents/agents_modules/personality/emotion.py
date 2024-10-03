@@ -1,5 +1,6 @@
 from irrationalAgents.config import *
-
+import logging
+logger = logging.getLogger(__name__)
 
 def emotion(self):
     self.current_state = {emotion: 0 for emotion in EMOTION_TYPES}
@@ -30,6 +31,7 @@ def get_emotion_levels(emotion):
 
 def get_complex_mood(emotion):
     levels = get_emotion_levels(emotion)
+    logger.info('mood: %s', levels)
     primary_emotion = max(levels, key=levels.get)
     primary_intensity = levels[primary_emotion]
 

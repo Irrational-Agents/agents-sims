@@ -12,7 +12,11 @@ def stimulus(agent, events):
     
 
     for event in events:
-        description = f"Kenta Takahashi chatted with Sato Sakura:'{event}'"
+        # todo: 
+        # if its new day, then no events wwill be triggered
+        # only need to append percept_object_list
+        #description = f"Kenta Takahashi chatted with Sato Sakura:'{event}'"
+        description = event
         percept_events_list.append(description)
 
     # form short memory and add memory to short memory stream

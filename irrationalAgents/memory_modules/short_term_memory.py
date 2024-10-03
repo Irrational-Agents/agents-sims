@@ -9,6 +9,9 @@ from irrationalAgents.common_method import *
 
 class ShortTermMemory:
     def __init__(self, short_memory_path):
+        # quick access. can be removed
+        self.short_memory_path = short_memory_path
+
         self.vision_r = 4
         self.att_bandwidth = 3
         self.retention = 5
@@ -72,11 +75,14 @@ class ShortTermMemory:
             'short_term_goal': self.short_term_goal,
             'short_memory_capacity': self.short_memory_capacity,
             'short_memory_for_plan': self.short_memory_for_plan,
+            'daily_plan_req': self.daily_plan_req,
             'short_memory': self.short_memory,
             'basic_needs': self.basic_needs,
             'temporary_personality_changes': self.temporary_personality_changes,
             'emotion': self.emotion
         }
+
+        out_json = self.short_memory_path
     
         with open(out_json, "w", encoding='utf-8') as outfile:
             json.dump(short_memory, outfile, ensure_ascii=False, indent=2)
@@ -93,6 +99,7 @@ class ShortTermMemory:
     def add_short_memory(self, memory):
 
         self.short_memory.extend(memory)
+        # update not simply accumulate memory
         new_events_text = format_events_as_text(memory)
     
         if hasattr(self, 'recent_events'):
@@ -116,6 +123,37 @@ class ShortTermMemory:
 
     def get_basic_needs(self):
         return self.basic_needs
+    
+    def moccupying4plan(self, plans):
+        # calulate mocupying for each plan
+        for i, plan in enumerate(plans):
+            start_time = datetime.strptime(plan["time"], "%H:%M")
+            
+            if i < len(plans) - 1:
+                end_time = datetime.strptime(plans[i + 1]["time"], "%H:%M")
+            else:
+                # For the last plan, set end time to next day's 00:00
+                end_time = (start_time + timedelta(days=1)).replace(hour=0, minute=0)
+            
+            duration = end_time - start_time
+            duration_minutes = duration.total_seconds() / 60
+            intervals = math.ceil(duration_minutes / 15)
+            
+            plan["moccupying"] = intervals
+
+        return plans
+    
+    def get_current_daily_plan(self):
+        plans = self.daily_plan_req
+        current_time = datetime.strptime(self.curr_time, "%H:%M").time()
+        
+        for i, plan in enumerate(plans):
+            plan_time = datetime.strptime(plan["time"], "%H:%M").time()
+            
+            if plan_time > current_time:
+                return plans[i-1] if i > 0 else None
+        
+        return plans[-1]  # 如果当前时间晚于所有计划，返回最后一个计划
     
     def get_f_daily_schedule_index(self, advance=0):
 

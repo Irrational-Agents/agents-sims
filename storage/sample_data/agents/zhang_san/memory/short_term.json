@@ -1,0 +1,173 @@
+{
+  "age": 27,
+  "current_location": "Beijing",
+  "short_term_goal_capacity": 3,
+  "short_term_goal": [
+    {
+      "description": "Complete the 3D model for the seaside hotel suite design",
+      "deadline": "2024-09-25"
+    }
+  ],
+  "short_memory_capacity": 30,
+  "short_memory_for_plan": [],
+  "daily_plan_req": [
+    {
+      "time": "00:00",
+      "activity": "Wind down with a calming evening routine, read a book or meditate.",
+      "moccupying": 2
+    },
+    {
+      "time": "00:30",
+      "activity": "Connect with friends online, chat with Wang Wu and Zhao Liu.",
+      "moccupying": 2
+    },
+    {
+      "time": "01:00",
+      "activity": "Play with Bobo and Langley, enjoy quality time with pets.",
+      "moccupying": 2
+    },
+    {
+      "time": "01:30",
+      "activity": "Plan the next day's activities and design work.",
+      "moccupying": 2
+    },
+    {
+      "time": "02:00",
+      "activity": "Sleep.",
+      "moccupying": 32
+    },
+    {
+      "time": "10:00",
+      "activity": "Wake up and do a morning stretch.",
+      "moccupying": 1
+    },
+    {
+      "time": "10:15",
+      "activity": "Personal hygiene routine (shower, brush teeth, etc.).",
+      "moccupying": 2
+    },
+    {
+      "time": "10:45",
+      "activity": "Prepare and have a healthy breakfast.",
+      "moccupying": 2
+    },
+    {
+      "time": "11:15",
+      "activity": "Check emails and messages, respond to important ones.",
+      "moccupying": 2
+    },
+    {
+      "time": "11:45",
+      "activity": "Research current design trends online.",
+      "moccupying": 2
+    },
+    {
+      "time": "12:15",
+      "activity": "Sketch new design ideas for the seaside hotel project.",
+      "moccupying": 3
+    },
+    {
+      "time": "13:00",
+      "activity": "Lunch break, enjoy a meal and relax.",
+      "moccupying": 2
+    },
+    {
+      "time": "13:30",
+      "activity": "Engage in a creative exercise, like mood boarding.",
+      "moccupying": 2
+    },
+    {
+      "time": "14:00",
+      "activity": "Work on interior design project for the high-end seaside hotel.",
+      "moccupying": 8
+    },
+    {
+      "time": "16:00",
+      "activity": "Take a break, stretch and play with Bobo and Langley.",
+      "moccupying": 2
+    },
+    {
+      "time": "16:30",
+      "activity": "Continue working on project designs.",
+      "moccupying": 8
+    },
+    {
+      "time": "18:30",
+      "activity": "Wrap up work for the day, review completed tasks.",
+      "moccupying": 2
+    },
+    {
+      "time": "19:00",
+      "activity": "Prepare and have dinner.",
+      "moccupying": 2
+    },
+    {
+      "time": "19:30",
+      "activity": "Attend a virtual industry seminar or design workshop.",
+      "moccupying": 6
+    },
+    {
+      "time": "21:00",
+      "activity": "Call best friend Li Si to talk about surfing plans.",
+      "moccupying": 2
+    },
+    {
+      "time": "21:30",
+      "activity": "Relax with a movie or some light reading.",
+      "moccupying": 6
+    },
+    {
+      "time": "23:00",
+      "activity": "Prepare for bed, reflect on the day and plan for tomorrow.",
+      "moccupying": 2
+    },
+    {
+      "time": "23:30",
+      "activity": "Go to bed.",
+      "moccupying": 2
+    }
+  ],
+  "short_memory": [
+    {
+      "time": "00:00",
+      "date": "2024-09-16",
+      "moccupying": 1,
+      "description": "feeling hungry"
+    },
+    {
+      "time": "00:15",
+      "date": "2024-09-16",
+      "moccupying": 1,
+      "description": "feeling hungry"
+    },
+    {
+      "time": "00:15",
+      "date": "2024-09-16",
+      "moccupying": 1,
+      "description": "order food"
+    }
+  ],
+  "basic_needs": {
+    "fullness": 6,
+    "social": 7,
+    "fun": 5,
+    "health": 8,
+    "energy": 7
+  },
+  "temporary_personality_changes": {
+    "openness": 0.3,
+    "conscientiousness": 0.2,
+    "extraversion": 0,
+    "agreeableness": 0.1,
+    "neuroticism": -0.2
+  },
+  "emotion": [
+    6,
+    0,
+    0,
+    0,
+    1,
+    0,
+    3
+  ]
+}

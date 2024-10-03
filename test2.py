@@ -10,14 +10,14 @@ def main():
         meta = json.load(f)
     
     
-    sakura = create_agent("sakura_sato")
+    sakura = create_agent(input("name: "))
     curr_time = datetime.strptime(f"{meta['start_date']} {meta['curr_time']}", "%Y-%m-%d %H:%M")
     
     # 動作確認
     print(f"test agent: {sakura.basic_info['name']}")
     while(True):
         
-        event = input("Shota(User): ")
+        event = input("Shota(User):  ") # should type wake up when new day
         sakura.move(meta['agents_list'], curr_time, event)
         print(sakura.short_memory.short_memory[-1])
         curr_time = curr_time + timedelta(minutes=15)
