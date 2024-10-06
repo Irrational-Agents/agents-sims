@@ -14,8 +14,22 @@ from irrationalAgents.agents_modules.personality.emotion import *
 from irrationalAgents.agents_modules.personality.personality import *
 
 logger = logging.getLogger(__name__)
+
+def gen_agent_by_name(name):
+    # todo: load from meta.json
+    root_dir = f"storage/sample_data/agents/{name}"
+    if not os.path.exists(root_dir):
+        logger.error(f"agent {name} not exists!")
+        return None
+    
+    with open(os.path.join(root_dir, "basic_info.json"), 'r', encoding='utf-8') as f:
+        basic_info = json.load(f)
+    memory_folder_path = os.path.join(root_dir, "memory")
+    return Agent(basic_info, memory_folder_path)
+
 class Agent:
     def __init__(self, basic_info, memory_folder_path=False):
+        
         self.basic_info = basic_info
 
         self.name = basic_info['name']
@@ -27,7 +41,12 @@ class Agent:
         short_memory_path = f"{memory_folder_path}/short_term.json"
         self.short_memory = ShortTermMemory(short_memory_path)
 
-        self.short_memory.personality_text = generate_personality(basic_info['personality_traits'])
+        # todo: no need to generate every time
+        if basic_info.get('personality'):
+            self.short_memory.personality_text = basic_info.get('personality')
+        else:
+            self.short_memory.personality_text = generate_personality(basic_info['personality_traits'])
+
         self.basic_profile = profile_to_narrative(basic_info) 
         self.formed_profile = self.basic_profile + self.short_memory.personality_text
         self.relationships = basic_info['social_relationships']
@@ -57,7 +76,7 @@ class Agent:
 
 
 
-    def move(self, agents_list, curr_time, event):
+    def move(self, curr_time, event):
         
         #eventは後で修正する。(多分マップの方で取り扱いそう)testチャットよう。
         #[event] will be removed after connecting Unity

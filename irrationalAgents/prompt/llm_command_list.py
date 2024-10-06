@@ -2,11 +2,14 @@ import os
 from openai import OpenAI
 import json
 import logging
+from langsmith import traceable
+from langsmith.wrappers import wrap_openai
 
 logger = logging.getLogger(__name__)
 api_key = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key=api_key)
+client = wrap_openai(OpenAI(api_key=api_key))
 
+@traceable(name="generative_agent")
 def generative_agent(system_content, user_content, max_retries=3):
     try:
         completion = client.chat.completions.create(
@@ -27,6 +30,7 @@ def generative_agent(system_content, user_content, max_retries=3):
         print(f"Error in generative_agent: {e}")
         return None
 
+@traceable(name="generate_plan")
 def generate_plan(agent_name, agent_profile, current_emotion, recent_events, current_time, current_date, daily_plan=None):
     with open('irrationalAgents/prompt/prompt_templates/plan_prompt.txt', 'r') as file:
         prompt_template1 = file.read()
@@ -58,6 +62,7 @@ def generate_plan(agent_name, agent_profile, current_emotion, recent_events, cur
         print("Error: Invalid JSON format in response.")
         return None
 
+@traceable(name="generate_daily_plan")
 def generate_daily_plan(agent_name, agent_profile, current_emotion, previous, current_date):
     with open('irrationalAgents/prompt/prompt_templates/daily_plan_prompt.txt', 'r') as file:
         prompt_template = file.read()
@@ -80,6 +85,7 @@ def generate_daily_plan(agent_name, agent_profile, current_emotion, previous, cu
         print("Error: Invalid JSON format in response.")
         return None
 
+@traceable(name="generate_conversation")
 def generate_conversation(agent_name, agent_profile, current_emotion, plan, recent_events, current_time, current_date):
     with open('irrationalAgents/prompt/prompt_templates/conv_prompt.txt', 'r') as file:
         prompt_template = file.read()
@@ -104,7 +110,8 @@ def generate_conversation(agent_name, agent_profile, current_emotion, plan, rece
         print("Error: Invalid JSON format in response.")
         return None
 
-def generate_personality(traits):
+@traceable(name="generate_personality")
+def generate_personality(traits):    
         with open('irrationalAgents/prompt/prompt_templates/personality_prompt.txt', 'r') as file:
             prompt_template = file.read()
         
@@ -117,6 +124,7 @@ def generate_personality(traits):
         print(personality_profile)
         return personality_profile
 
+@traceable(name="generate_short_memory")
 def generate_short_memory(agent_name, current_emotion, personality_traits, relationships, past_memories, perceived_events):
     with open('irrationalAgents/prompt/prompt_templates/short_memory_prompt.txt', 'r') as file:
             prompt_template = file.read()
