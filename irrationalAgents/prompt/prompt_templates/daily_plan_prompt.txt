@@ -17,8 +17,4 @@ Make sure the plan accounts for {agent_name}’s emotional state, previously(if 
 
 Please format your response as a JSON list of strings, like below. Do not include any additional text, markdown formatting, or explanations outside the JSON array:
 
-<<<<<<< HEAD
 [{{"time": "16:00","activity": "an activity example","moccupying": 1}}]
-=======
-[{{"time": "16:00","activity": "an activity example"}}]
->>>>>>> origin/sims-setup

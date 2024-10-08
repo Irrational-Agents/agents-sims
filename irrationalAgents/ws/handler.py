@@ -1,13 +1,3 @@
-'''
-Author: Yifei Wang
-Github: ephiewangyf@gmail.com
-Date: 2024-10-06 13:14:46
-LastEditors: ephie && ephiewangyf@gmail.com
-LastEditTime: 2024-10-06 13:18:24
-FilePath: /Agents-Sim/irrationalAgents/ws/handler.py
-Description: For all the intervention commands
-'''
-
 from irrationalAgents.agent import gen_agent_by_name
 from irrationalAgents.agents_modules.behavior.action import handle_chat
 

@@ -1,12 +1,4 @@
-'''
-Author: Yifei Wang
-Github: ephiewangyf@gmail.com
-Date: 2024-09-17 20:07:21
-LastEditors: ephie && ephiewangyf@gmail.com
-LastEditTime: 2024-10-06 12:41:00
-FilePath: /Agents-Sim/irrationalAgents/agents_modules/behavior/plan.py
-Description: 
-'''
+
 from datetime import datetime, timedelta
 import math
 import logging
@@ -21,11 +13,7 @@ def plan(agent, new_day):
     daily_plan = []
     if new_day:
         daily_plan = daily_planning(agent)
-<<<<<<< HEAD
         agent.short_memory.daily_plan_req = agent.short_memory.intervals4plan(
-=======
-        agent.short_memory.daily_plan_req = agent.short_memory.moccupying4plan(
->>>>>>> origin/sims-setup
             daily_plan)
     plan_list = create_plan(agent)
     logger.info(f"plan: {plan_list}")

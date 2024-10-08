@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Agent name: {agent_name}
 Agent profile: {agent_profile}
 Current emotion: {current_emotion}
@@ -16,35 +15,3 @@ Make sure the plan accounts for {agent_name}’s emotional state, previously(if 
 Please format your response as a JSON list of strings, like below. Do not include any additional text, markdown formatting, or explanations outside the JSON array:
 
 [{{"time": "16:00","activity": "an activity example","moccupying": 1}}]
-=======
-Agent Name: {agent_name}
-Agent Profile: {agent_profile}
-Current Emotion: {current_emotion}
-Personality Traits: {personality_traits}
-Recent Events: {recent_events}
-
-Based on the provided information, generate a detailed daily plan for {agent_name}, starting at 6 a.m. The plan should:
-1. Define a primary goal for the day based on {agent_name}’s personality traits, professional objectives, or personal aspirations.
-2. Break down the primary goal into manageable tasks that suit {agent_name}’s working style, preferences, and energy levels, ensuring time for relaxation and socializing.
-3. Include basic daily routines such as waking up, hygiene, meals, and leisure activities, making sure each activity lasts at least 30 minutes or more.
-4. Reflect the personality traits of {agent_name} by adjusting the schedule to their emotional tendencies, balancing between productive tasks, social interactions, and downtime.
-
-The plan should consider:
-1. Primary Goal: Define one significant task for the day, tailored to {agent_name}’s personality and current emotional state (e.g., creative work if openness is high, structured work if conscientiousness is high).
-2. Task Breakdown: Break the primary goal into smaller tasks based on {agent_name}’s productivity levels, adjusting for introversion/extraversion when planning work or social time.
-3. Basic Daily Routines: Waking up, hygiene, meals, and moments of leisure, such as watching TV or exercising, ensuring a healthy routine.
-4. Work Tasks: Include tasks related to {agent_name}’s professional or personal growth, emphasizing their strengths (e.g., creativity, organization).
-5. Hobbies and Personal Interests: Time for relaxation, hobbies, or personal projects aligned with their personality (e.g., artistic activities if creative, fitness if energetic).
-6. Social Interactions: Reflect {agent_name}’s social tendencies, whether they prefer more alone time or regular interactions with friends, colleagues, or family.
-7. Breaks and Rest: Ensure sufficient downtime to recharge based on the emotional state and personality traits.
-
-Make sure the plan takes into account {agent_name}’s current emotional state, recent events, and their personality traits, helping them progress toward their long-term and mid-term goals while keeping a balance between work, social life, and personal time.
-
-
-The plan should include the following:
-1. Basic daily tasks such as waking up, breakfast, hygiene, and relaxing moments, also the time to sleep.
-2. Professional tasks related to {agent_name}’s career goals and skill set.
-3. Time for hobbies or personal interests such as physical activities, creative work, or relaxation.
-4. Social interactions with important relationships (friends, partners, or collaborators).
-5. Breaks and relaxation periods for rest and rejuvenation.
->>>>>>> origin/sims-setup

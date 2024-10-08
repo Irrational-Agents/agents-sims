@@ -14,7 +14,6 @@ from irrationalAgents.agents_modules.personality.emotion import *
 from irrationalAgents.agents_modules.personality.personality import *
 
 logger = logging.getLogger(__name__)
-<<<<<<< HEAD
 
 def gen_agent_by_name(name):
     # todo: load from meta.json
@@ -28,8 +27,6 @@ def gen_agent_by_name(name):
     memory_folder_path = os.path.join(root_dir, "memory")
     return Agent(basic_info, memory_folder_path)
 
-=======
->>>>>>> origin/sims-setup
 class Agent:
     def __init__(self, basic_info, memory_folder_path=False):
         

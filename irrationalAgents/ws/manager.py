@@ -1,12 +1,3 @@
-'''
-Author: Yifei Wang
-Github: ephiewangyf@gmail.com
-Date: 2024-09-21 16:02:18
-LastEditors: ephie && ephiewangyf@gmail.com
-LastEditTime: 2024-09-21 16:06:11
-FilePath: /Agents-Sim/irrationalAgents/ws/manager.py
-Description: 
-'''
 from fastapi import WebSocket
 
 class ConnectionManager:
