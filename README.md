@@ -1,12 +1,3 @@
-<!--
- * @Author: Yifei Wang
- * Github: ephiewangyf@gmail.com
- * @Date: 2024-09-17 20:06:46
- * @LastEditors: ephie && ephiewangyf@gmail.com
- * @LastEditTime: 2024-10-08 14:53:56
- * @FilePath: /Agents-Sim/README.md
- * @Description: 
--->
 # Agents-Sim
 
 Agents Sim repository
