@@ -124,7 +124,7 @@ class ShortTermMemory:
     def get_basic_needs(self):
         return self.basic_needs
     
-    def moccupying4plan(self, plans):
+    def intervals4plan(self, plans):
         # calulate mocupying for each plan
         for i, plan in enumerate(plans):
             start_time = datetime.strptime(plan["time"], "%H:%M")
@@ -139,7 +139,7 @@ class ShortTermMemory:
             duration_minutes = duration.total_seconds() / 60
             intervals = math.ceil(duration_minutes / 15)
             
-            plan["moccupying"] = intervals
+            plan["intervals"] = intervals
 
         return plans
     

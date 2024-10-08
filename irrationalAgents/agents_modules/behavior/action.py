@@ -48,6 +48,7 @@ def handle_chat(agent, description, recent_events_text):
     }
     print(get_complex_mood(agent.short_memory.emotion_memory[-1]))
     agent.short_memory.add_short_memory([new_entry])
+    return conv
 
 def handle_interact(agent, description):
     '''

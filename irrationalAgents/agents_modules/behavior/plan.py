@@ -1,3 +1,4 @@
+
 from datetime import datetime, timedelta
 import math
 import logging
@@ -12,7 +13,7 @@ def plan(agent, new_day):
     daily_plan = []
     if new_day:
         daily_plan = daily_planning(agent)
-        agent.short_memory.daily_plan_req = agent.short_memory.moccupying4plan(
+        agent.short_memory.daily_plan_req = agent.short_memory.intervals4plan(
             daily_plan)
     plan_list = create_plan(agent)
     logger.info(f"plan: {plan_list}")
