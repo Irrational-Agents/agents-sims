@@ -1,3 +1,12 @@
+<!--
+ * @Author: Yifei Wang
+ * Github: ephiewangyf@gmail.com
+ * @Date: 2024-09-17 20:06:46
+ * @LastEditors: ephie && ephiewangyf@gmail.com
+ * @LastEditTime: 2024-10-08 14:53:56
+ * @FilePath: /Agents-Sim/README.md
+ * @Description: 
+-->
 # Agents-Sim
 
 Agents Sim repository
@@ -13,3 +22,26 @@ Agents Sim repository
 - **Development**: [Dev Environment](https://agents-sim-dev-lo5zb4dpiq-ts.a.run.app)
 - **Staging**: [Staging environment](https://agents-sim-stage-lo5zb4dpiq-ts.a.run.app)
 - **Production**: [Main Environment](https://agents-sim-main-lo5zb4dpiq-ts.a.run.app)
+
+### Code Running
+
+1. Prepare api keys and set variables in ur environments.
+   1. https://platform.openai.com/
+   2. https://smith.langchain.com/
+   
+    ```
+    "LANGCHAIN_TRACING_V2": "true",
+    "LANGCHAIN_ENDPOINT": "https://api.smith.langchain.com",
+    "LANGCHAIN_API_KEY": "YOUR KEY",
+    "LANGCHAIN_PROJECT": "IrationalAgents",
+    "OPENAI_API_KEY": "YOUR KEY"
+    ```
+2. install 
+   ```
+   pip install -r requirements.txt
+   ``` 
+
+3. Entrence see test2.py (or you can make ur own)
+   ```
+   python test3.py
+   ```
