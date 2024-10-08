@@ -2,8 +2,11 @@ import os
 from openai import OpenAI
 import json
 import logging
+<<<<<<< HEAD
 from langsmith import traceable
 from langsmith.wrappers import wrap_openai
+=======
+>>>>>>> origin/sims-setup
 
 logger = logging.getLogger(__name__)
 api_key = os.getenv('OPENAI_API_KEY')
@@ -30,7 +33,10 @@ def generative_agent(system_content, user_content, max_retries=3):
         print(f"Error in generative_agent: {e}")
         return None
 
+<<<<<<< HEAD
 @traceable(name="generate_plan")
+=======
+>>>>>>> origin/sims-setup
 def generate_plan(agent_name, agent_profile, current_emotion, recent_events, current_time, current_date, daily_plan=None):
     with open('irrationalAgents/prompt/prompt_templates/plan_prompt.txt', 'r') as file:
         prompt_template1 = file.read()
@@ -62,10 +68,34 @@ def generate_plan(agent_name, agent_profile, current_emotion, recent_events, cur
         print("Error: Invalid JSON format in response.")
         return None
 
+<<<<<<< HEAD
 @traceable(name="generate_daily_plan")
 def generate_daily_plan(agent_name, agent_profile, current_emotion, previous, current_date):
     with open('irrationalAgents/prompt/prompt_templates/daily_plan_prompt.txt', 'r') as file:
         prompt_template = file.read()
+=======
+def generate_daily_plan(agent_name, agent_profile, current_emotion, previous, current_date):
+    with open('irrationalAgents/prompt/prompt_templates/daily_plan_prompt.txt', 'r') as file:
+        prompt_template = file.read()
+
+    prompt = prompt_template.format(
+        agent_name=agent_name,
+        agent_profile=agent_profile,
+        current_emotion=current_emotion,
+        previous=previous,
+        current_date=current_date
+    )
+
+    system_content = "You are an AI assistant tasked with generating a character's daily schedule by combining given information."
+    response = generative_agent(system_content, prompt)
+    logger.info(f"daily plan response: {response}")
+    try:
+        parsed_response = json.loads(response)
+        return parsed_response
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON format in response.")
+        return None
+>>>>>>> origin/sims-setup
 
     prompt = prompt_template.format(
         agent_name=agent_name,
