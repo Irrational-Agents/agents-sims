@@ -3,11 +3,10 @@ Author: Yifei Wang
 Github: ephiewangyf@gmail.com
 Date: 2024-10-06 11:48:09
 LastEditors: ephie && ephiewangyf@gmail.com
-LastEditTime: 2024-10-06 12:16:48
+LastEditTime: 2024-10-08 14:31:00
 FilePath: /Agents-Sim/irrationalAgents/ws/test.py
-Description: Test only for develop
+Description: 
 '''
-
 from fastapi.testclient import TestClient
 
 from commands import app
