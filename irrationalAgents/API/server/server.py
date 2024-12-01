@@ -2,8 +2,8 @@ import os
 import json
 from typing import List
 from fastapi import FastAPI, HTTPException,Query
-from models import *
-from handler import *
+from API.server.models import * 
+from API.server.handler import *
 from logger_config import setup_logger
 
 logger = setup_logger('API-server')
@@ -12,7 +12,7 @@ app = FastAPI(title="NPC CRUD API")
 
 NPC_STORAGE_BASE_PATH = "storage/sample_data/agents"
 
-@app.get("/npcs", response_model=Dict[str, Any])
+@app.get("/npcs", response_model=List[Union[NPCModel, NPCInfoModel]])
 def get_npcs(request: NPCGetRequest):
     logger.info(f"Received get request for NPCs: {request.names}")
     
@@ -44,7 +44,7 @@ def get_npcs(request: NPCGetRequest):
             for npc, details in zip(valid_npcs, npcs)
         }
         
-        logger.info(f"Successfugitlly get NPCs: {list(response.keys())}")
+        logger.info(f"Successfully get NPCs: {list(response.keys())}")
         return response
         
     except Exception as e:
@@ -63,10 +63,10 @@ def create_npc(npc: NPCModel):
             logger.warning(f"Attempting to create existing NPC: {npc.name}")
             raise HTTPException(status_code=400, detail=f"NPC '{npc.name}' already exists")
 
-        save_npc(npc)
+        ret = save_npc(npc)
         
         logger.info(f"Successfully created NPC: {npc.name}")
-        return npc
+        return ret
     except HTTPException:
         raise
     except Exception as e:

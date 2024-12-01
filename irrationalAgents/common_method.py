@@ -1,6 +1,7 @@
 
 from datetime import datetime, timedelta
 import os
+import json
 
 def check_if_file_exists(curr_file): 
   try: 
@@ -8,7 +9,9 @@ def check_if_file_exists(curr_file):
     return True
   except: 
     return False
-  
+
+def convert_name(name):
+    return name.lower().replace(" ", "_")
 
 def profile_to_narrative(profile):
     narrative = []

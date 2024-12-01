@@ -2,10 +2,10 @@ import datetime
 import json
 import sys
 
-from irrationalAgents.agents_modules.behavior.plan import *
+from agents_modules.behavior.plan import *
 sys.path.append('../../')
 
-from irrationalAgents.common_method import *
+from common_method import *
 
 class ShortTermMemory:
     def __init__(self, short_memory_path):

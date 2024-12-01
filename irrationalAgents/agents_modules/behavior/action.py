@@ -1,6 +1,6 @@
-from irrationalAgents.prompt.llm_command_list import *
-from irrationalAgents.common_method import *
-from irrationalAgents.agents_modules.personality.emotion import *
+from prompt.llm_command_list import *
+from common_method import *
+from agents_modules.personality.emotion import *
 
 def action(agent, next_action):
     action_type = next_action['action']
