@@ -76,7 +76,7 @@ class Agent:
 
 
 
-    def move(self, curr_time, event):
+    def move(self, agents_list,curr_time, event):
         
         #eventは後で修正する。(多分マップの方で取り扱いそう)testチャットよう。
         #[event] will be removed after connecting Unity
