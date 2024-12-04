@@ -7,6 +7,7 @@ import asyncio
 import json
 from typing import Dict, Any, Optional, Callable
 from datetime import datetime
+from API.client.handler import AgentClient
 
 logger = setup_logger('API-Client')
 
@@ -22,7 +23,6 @@ class WSClient:
         self.reconnect_interval = 5
 
     async def connect(self):
-        """建立WebSocket连接"""
         try:
             if self.session is None:
                 self.session = aiohttp.ClientSession()
@@ -33,7 +33,6 @@ class WSClient:
             )
             self.is_connected = True
             logger.info("WebSocket connected to %s", self.uri)
-            # 启动消息接收循环
             asyncio.create_task(self._message_loop())
         except Exception as e:
             logger.error("Connection failed: %s", str(e))
@@ -41,14 +40,12 @@ class WSClient:
             await self.reconnect()
 
     async def reconnect(self):
-        """重连机制"""
         while not self.is_connected:
             logger.info("Attempting to reconnect in %s seconds...", self.reconnect_interval)
             await asyncio.sleep(self.reconnect_interval)
             await self.connect()
 
     async def _message_loop(self):
-        """消息接收循环"""
         try:
             async for msg in self.ws:
                 if msg.type == aiohttp.WSMsgType.TEXT:
@@ -66,16 +63,13 @@ class WSClient:
             await self.reconnect()
 
     async def _handle_message(self, message: str):
-        """处理接收到的消息"""
         try:
             data = json.loads(message)
             logger.debug("Received message: %s", data)
-            # 处理响应
             if "request_id" in data:
                 future = self.response_futures.get(data["request_id"])
                 if future and not future.done():
                     future.set_result(data)
-            # 处理事件
             elif "event" in data:
                 handler = self.message_handlers.get(data["event"])
                 if handler:
@@ -84,7 +78,6 @@ class WSClient:
             logger.error("Error handling message: %s", str(e))
 
     async def send_command(self, command: str, params: Dict = None, timeout: int = 10) -> Dict:
-        """发送命令并等待响应"""
         if not self.is_connected or self.ws is None:
             raise ConnectionError("WebSocket is not connected")
 
@@ -109,71 +102,33 @@ class WSClient:
             self.response_futures.pop(request_id, None)
 
     def register_handler(self, event: str, handler: Callable):
-        """注册事件处理器"""
         self.message_handlers[event] = handler
 
     async def close(self):
-        """关闭连接"""
         if self.ws:
             await self.ws.close()
         if self.session:
             await self.session.close()
         self.is_connected = False
 
-class GameClient:
-    """游戏客户端API封装"""
-    def __init__(self, ws_client: WSClient):
-        self.ws_client = ws_client
-
-    # 建筑相关API
-    async def get_building_info(self, building_id: int) -> Dict:
-        return await self.ws_client.send_command(
-            "command.building.GetBuildingInfo",
-            {"buildingID": building_id}
-        )
-
-    async def get_buildings(self) -> Dict:
-        return await self.ws_client.send_command("command.building.GetBuildings")
-
-    # NPC相关API
-    async def get_npc_info(self, npc_id: int) -> Dict:
-        return await self.ws_client.send_command(
-            "command.npc.GetNPCInfo",
-            {"NPCID": npc_id}
-        )
-
-    async def get_npcs(self) -> Dict:
-        return await self.ws_client.send_command("command.npc.GetNPCs")
-
-    # 地图相关API
-    async def get_map_scene(self) -> Dict:
-        return await self.ws_client.send_command("command.map.GetMapScene")
-
-    async def get_map_town(self) -> Dict:
-        return await self.ws_client.send_command("command.map.GetMapTown")
-
 async def main():
     # 创建客户端实例
-    ws_client = WSClient("ws://localhost:8765")
-    game_client = GameClient(ws_client)
+    ws_client = WSClient(ws_url)
+    agent_client = AgentClient(ws_client)
 
-    # 注册事件处理器示例
     async def on_npc_status_change(data):
         logger.info("NPC status changed: %s", data)
     ws_client.register_handler("npc_status_change", on_npc_status_change)
 
     try:
-        # 连接服务器
         await ws_client.connect()
 
-        # API调用示例
-        buildings = await game_client.get_buildings()
+        buildings = await agent_client.get_buildings()
         logger.info("Buildings: %s", buildings)
 
-        npcs = await game_client.get_npcs()
+        npcs = await agent_client.get_npcs()
         logger.info("NPCs: %s", npcs)
 
-        # 保持运行一段时间
         await asyncio.sleep(3600)
 
     except Exception as e:

@@ -1,3 +1,7 @@
+# Websocket Configuration
+
+ws_url = "ws://unity.com/websocket" # test
+
 # Action configuration
 AVAILABLE_ACTIONS = ["moving", "interacting", "thinking", "sleeping"]
 ACTION_COOLDOWN = 5  # seconds
