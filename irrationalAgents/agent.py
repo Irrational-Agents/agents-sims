@@ -93,6 +93,9 @@ class Agent:
         self.short_memory.curr_datetime = curr_time
         self.short_memory.curr_time = self.short_memory.curr_datetime.strftime('%H:%M')
         self.short_memory.curr_date = self.short_memory.curr_datetime.strftime('%Y-%m-%d')
+
+        if new_day == "New day":
+            self.long_memory.update_all_freshness(self.short_memory.curr_datetime)
             
         stimulus = self.stimulus(events)
 
