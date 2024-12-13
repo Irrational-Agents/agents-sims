@@ -3,6 +3,6 @@
   "curr_time": "00:00",
   "sec_per_step": 10,
   "map_name": null,
-  "agents_list": ["Sato Sakura", "Shota Takahashi", "Zhang San"],
+  "agents_list": ["Sakura Sato", "Kenta Takahashi", "Zhang San"],
   "step": 0
 }
