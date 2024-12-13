@@ -3,10 +3,15 @@ Author: Yifei Wang
 Github: ephiewangyf@gmail.com
 Date: 2024-12-13 14:35:42
 LastEditors: ephie && ephiewangyf@gmail.com
-LastEditTime: 2024-12-13 17:08:55
+LastEditTime: 2024-12-13 18:04:43
 FilePath: /Agents-Sim/irrationalAgents/API/unity/test.py
 Description: 
 '''
+import asyncio
+from API.unity.request import UnityRequest
+from API.unity.unity import UnityServer
+import threading
+
 import socketio
 import asyncio
 import json
@@ -144,5 +149,45 @@ async def main():
     finally:
         await client.disconnect()
 
-if __name__ == "__main__":
-    asyncio.run(main())
+# if __name__ == "__main__":
+#     asyncio.run(main())
+
+
+
+    # test_request.py
+
+async def test_map_town():
+    # 启动服务器（如果还没启动）
+    server = UnityServer()
+    server_thread = threading.Thread(target=server.start)
+    server_thread.daemon = True
+    server_thread.start()
+
+    # 等待服务器启动
+    await asyncio.sleep(2)
+    
+    # 创建请求对象
+    request = UnityRequest(server.sio, server.current_client_sid)
+    
+    # 等待客户端连接
+    retries = 0
+    while not server.current_client_sid and retries < 5:
+        logger.info("Waiting for client connection...")
+        await asyncio.sleep(1)
+        retries += 1
+
+    if not server.current_client_sid:
+        logger.error("No client connected")
+        return
+
+    # 发送请求并等待响应
+    result = await request.get_map_town()
+    logger.info(f"Result: {result}")
+
+if __name__ == '__main__':
+    try:
+        asyncio.run(test_map_town())
+    except KeyboardInterrupt:
+        logger.info("Test stopped by user")
+    except Exception as e:
+        logger.error(f"Test error: {str(e)}")

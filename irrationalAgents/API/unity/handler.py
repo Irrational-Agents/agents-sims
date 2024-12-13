@@ -131,9 +131,11 @@ class UnityHandlers:
             logger.error(f"Error in NPC navigation: {str(e)}")
             return {'error': str(e)}
 
-    def handle_get_map_town(self, params: Dict) -> Dict:
+    def get_map_town(self, params: Dict) -> Dict:
         """处理获取城镇地图的请求"""
-        return {'town': self.map_data['town']}
+        if self.current_client_sid:
+            self.sio.emit('command.map.GetMapTown', '', room=self.current_client_sid)
+
 
     def handle_get_map_scene(self, params: Dict) -> Dict:
         """处理获取场景地图的请求"""
