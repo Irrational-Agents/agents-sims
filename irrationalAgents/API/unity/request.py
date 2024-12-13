@@ -1,10 +1,7 @@
-import socketio
-import eventlet
 from typing import Dict, Any
 from datetime import datetime
 from logger_config import setup_logger
 import asyncio
-import threading
 
 logger = setup_logger('API-unity-request')
 
@@ -37,16 +34,4 @@ class UnityRequest():
             return {'error': 'Timeout waiting for map town response'}
         except Exception as e:
             logger.error(f"Error requesting map town: {str(e)}")
-            return {'error': str(e)}
-        
-        try:
-            self.sio.emit(
-                'command.chat.NPCChatUpdate',
-                params or {},
-                room=self.current_client_sid,
-                callback=lambda data: logger.info(f"NPC chat update response: {data}")
-            )
-            return {'success': True, 'message': 'NPC chat update request sent'}
-        except Exception as e:
-            logger.error(f"Error requesting NPC chat update: {str(e)}")
             return {'error': str(e)}

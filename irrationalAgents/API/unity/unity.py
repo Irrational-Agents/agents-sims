@@ -72,7 +72,6 @@ class UnityServer:
             }, room=sid)
 
     def start(self, host: str = '0.0.0.0', port: int = 8080):
-        """启动服务器"""
         logger.info(f"Starting unity server on {host}:{port}")
         eventlet.wsgi.server(eventlet.listen((host, port)), self.app)
 

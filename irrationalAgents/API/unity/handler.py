@@ -130,25 +130,3 @@ class UnityHandlers:
         except Exception as e:
             logger.error(f"Error in NPC navigation: {str(e)}")
             return {'error': str(e)}
-
-    def get_map_town(self, params: Dict) -> Dict:
-        """处理获取城镇地图的请求"""
-        if self.current_client_sid:
-            self.sio.emit('command.map.GetMapTown', '', room=self.current_client_sid)
-
-
-    def handle_get_map_scene(self, params: Dict) -> Dict:
-        """处理获取场景地图的请求"""
-        return {'scene': self.map_data['scene']}
-
-    def handle_get_equipments_config(self, params: Dict) -> Dict:
-        """处理获取装备配置的请求"""
-        return {'equipments': self.configs['equipments']}
-
-    def handle_get_buildings_config(self, params: Dict) -> Dict:
-        """处理获取建筑配置的请求"""
-        return {'buildings': self.configs['buildings']}
-
-    def handle_npc_chat_update(self, params: Dict) -> Dict:
-        """处理NPC聊天更新的请求"""
-        return {'updated': True}
