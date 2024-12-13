@@ -2,7 +2,7 @@ import os
 import json
 from typing import List
 from fastapi import HTTPException
-from API.server.models import NPCModel, NPCInfoModel
+from API.server_draft.models import NPCModel, NPCInfoModel
 from functools import wraps
 from agent import gen_agent_by_name
 from typing import Callable, Union, List

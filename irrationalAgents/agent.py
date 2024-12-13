@@ -16,18 +16,6 @@ from logger_config import setup_logger
 
 logger = setup_logger('Agent')
 
-def gen_agent_by_name(name):
-    # todo: load from meta.json
-    root_dir = os.path.join(WORK_DIR,f'../storage/sample_data/agents/{name}')
-    if not os.path.exists(root_dir):
-        logger.error(f"agent {name} not exists!")
-        return None
-    
-    with open(os.path.join(root_dir, "basic_info.json"), 'r', encoding='utf-8') as f:
-        basic_info = json.load(f)
-    memory_folder_path = os.path.join(root_dir, "memory")
-    return Agent(basic_info, memory_folder_path)
-
 class Agent:
     def __init__(self, basic_info, memory_folder_path=False):
         

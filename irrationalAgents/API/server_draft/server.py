@@ -2,8 +2,8 @@ import os
 import json
 from typing import List
 from fastapi import FastAPI, HTTPException,Query
-from API.server.models import * 
-from API.server.handler import *
+from API.server_draft.models import * 
+from API.server_draft.handler import *
 from logger_config import setup_logger
 
 logger = setup_logger('API-server')

@@ -1,6 +1,6 @@
 import json
 import yaml
-from API.server.server import app
+from API.server_draft.server import app
 def generate_openapi_json(app, output_file: str = "openapi.json"):
    """
    Generate OpenAPI specification JSON file from FastAPI app

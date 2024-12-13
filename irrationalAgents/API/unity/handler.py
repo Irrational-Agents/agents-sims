@@ -130,3 +130,6 @@ class UnityHandlers:
         except Exception as e:
             logger.error(f"Error in NPC navigation: {str(e)}")
             return {'error': str(e)}
+        
+    def get_map_town(self, request_data=None):
+        print(f'get map town {request_data}')
