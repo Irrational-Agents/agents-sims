@@ -18,7 +18,7 @@ logger = setup_logger('Agent')
 
 def gen_agent_by_name(name):
     # todo: load from meta.json
-    root_dir = f"storage/sample_data/agents/{name}"
+    root_dir = os.path.join(WORK_DIR,f'../storage/sample_data/agents/{name}')
     if not os.path.exists(root_dir):
         logger.error(f"agent {name} not exists!")
         return None
