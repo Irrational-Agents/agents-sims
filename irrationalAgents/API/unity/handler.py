@@ -28,10 +28,9 @@ class UnityHandlers:
         # 游戏状态存储
         self.players = {}
         self.npcs = {}
-        self.map_data = {
-            'town': {'name': 'Test Town', 'size': {'width': 1000, 'height': 1000}},
-            'scene': {'name': 'Test Scene', 'objects': []}
-        }
+        self.map_data = None
+        self.meta_data = None
+        self.block_data = None
         self.configs = {
             'equipments': {'weapons': [], 'armors': []},
             'buildings': {'houses': [], 'shops': []}
@@ -131,5 +130,11 @@ class UnityHandlers:
             logger.error(f"Error in NPC navigation: {str(e)}")
             return {'error': str(e)}
         
-    def get_map_town(self, request_data=None):
-        print(f'get map town {request_data}')
+    def handle_map_data(self, sid: str, data: Dict[str, Any]):
+        self.map_data = data
+
+    def handle_meta_data(self, sid: str, data: Dict[str, Any]):
+        self.meta_data = data
+
+    def handle_block_data(self, sid: str, data: Dict[str, Any]):
+        self.block_data = data
