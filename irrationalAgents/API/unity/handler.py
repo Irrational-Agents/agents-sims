@@ -36,6 +36,7 @@ class UnityHandlers:
             'equipments': {'weapons': [], 'armors': []},
             'buildings': {'houses': [], 'shops': []}
         }
+        self.sio = None
 
     def handle_get_npcs(self, params: Dict) -> Dict:
         """Handle request to get all NPCs"""
@@ -131,5 +132,9 @@ class UnityHandlers:
             logger.error(f"Error in NPC navigation: {str(e)}")
             return {'error': str(e)}
         
-    def get_map_town(self, request_data=None):
-        print(f'get map town {request_data}')
+    def get_map_town(self, sid: str, data: Dict[str, Any]):
+        logger.info(f'get map town {data}')
+
+    def handle_tick(self, sid: str, data: Dict[str, Any]):
+        logger.info(f'clock {data}')
+        self.sio.emit("ticked", '', to=sid)
