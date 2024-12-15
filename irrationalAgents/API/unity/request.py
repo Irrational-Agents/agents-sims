@@ -43,7 +43,7 @@ class UnityRequest:
         self.emit("command.config.GetEquipmentsConfig", request_data)
 
     def get_buildings_config(self, request_data=None):
-        self.emit("command.config.GetBuildingsConfig", request_data)
+        self.emit("command.config.GetBuildingsConfig",request_data)
     
     def npc_chat_update(self, request_data=None):
         self.emit("command.chat.NPCChatUpdate", request_data)

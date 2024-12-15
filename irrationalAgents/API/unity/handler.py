@@ -7,6 +7,7 @@ from logger_config import setup_logger
 from API.unity.models import *
 from config import *
 from common_method import *
+import numpy as np
 
 logger = setup_logger('API-unity-handler')
 
@@ -131,5 +132,15 @@ class UnityHandlers:
             logger.error(f"Error in NPC navigation: {str(e)}")
             return {'error': str(e)}
         
-    def get_map_town(self, request_data=None):
-        print(f'get map town {request_data}')
+    def get_map_town(self, map_info=None):
+        #map_info save
+        logger.info(f'get map town, {map_info}')
+    
+    def get_map_scene(self, scene_info=None):
+        logger.info('get map scene')
+    
+    def get_equipments_config(self, config_info=None):
+        logger.info('get equipments config')
+    
+    def get_buildings_config(self, config_info=None):
+        logger.info(f'get buildings config, {config_info}')
