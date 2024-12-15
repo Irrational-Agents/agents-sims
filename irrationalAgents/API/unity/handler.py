@@ -8,6 +8,8 @@ from API.unity.models import *
 from config import *
 from common_method import *
 import numpy as np
+from API.unity.request import UnityRequest
+from API.unity.map_translator import MapTranslator
 
 logger = setup_logger('API-unity-handler')
 
@@ -26,6 +28,7 @@ def gen_agent_by_name(name):
 class UnityHandlers:
     def __init__(self):
         self.NPC_STORAGE_BASE_PATH = os.path.join(WORK_DIR, "../storage/sample_data")
+        self.unity_request: UnityRequest = None
         # 游戏状态存储
         self.players = {}
         self.npcs = {}
@@ -36,6 +39,27 @@ class UnityHandlers:
             'equipments': {'weapons': [], 'armors': []},
             'buildings': {'houses': [], 'shops': []}
         }
+
+    def update(self, data: Dict[str, Any]):
+        """Handle updates from the client."""
+        try:
+            self.clock = int(data)
+            if self.clock == 0:
+                if not self.initiated:
+                    self.init()
+                if not self.map_data or not self.meta_data or not self.block_data:
+                    self.unity_request.send_server_tick(0)
+                else:
+                    self.map_translator = MapTranslator(
+                        self.map_data,
+                        self.meta_data,
+                        self.block_data
+                    )
+                    self.unity_request.send_server_tick(1)
+            else:
+                self.unity_request.send_server_tick(1)
+        except ValueError as e:
+            logger.error(f"Invalid data received for update: {data}. Error: {e}")
 
     def handle_get_npcs(self, params: Dict) -> Dict:
         """Handle request to get all NPCs"""
@@ -73,10 +97,7 @@ class UnityHandlers:
                 else:
                     npc_data = NPCInfoModel(**(agent|status))
                 npcs.append(npc_data)
-            return {
-                'npcs': [npc.model_dump() for npc in npcs] or None
-            }
-            
+            self.unity_request.emit('npc.getList.response', {'npcs': [npc.model_dump() for npc in npcs] or None})
         except Exception as e:
             logger.error(f"Error getting NPCs: {str(e)}")
             return {'error': str(e)}
@@ -98,7 +119,7 @@ class UnityHandlers:
             npc_data = NPCModel(**agent)
             npc_data.status = status
             
-            return {'npc': npc_data.model_dump()}
+            self.unity_request.emit('npc.getInfo.response', {'npc': npc_data.model_dump()})
             
         except Exception as e:
             logger.error(f"Error getting NPC info: {str(e)}")
@@ -131,18 +152,6 @@ class UnityHandlers:
             logger.error(f"Error in NPC navigation: {str(e)}")
             return {'error': str(e)}
         
-    def get_map_town(self, map_info=None):
-        #map_info save
-        logger.info(f'get map town, {map_info}')
-    
-    def get_map_scene(self, scene_info=None):
-        logger.info('get map scene')
-    
-    def get_equipments_config(self, config_info=None):
-        logger.info('get equipments config')
-    
-    def get_buildings_config(self, config_info=None):
-        logger.info(f'get buildings config, {config_info}')
     def handle_map_data(self, sid: str, data: Dict[str, Any]):
         self.map_data = data
 
@@ -151,3 +160,9 @@ class UnityHandlers:
 
     def handle_block_data(self, sid: str, data: Dict[str, Any]):
         self.block_data = data
+
+    def get_equipments_config(self, config_info=None):
+        logger.info('get equipments config')
+    
+    def get_buildings_config(self, config_info=None):
+        logger.info(f'get buildings config, {config_info}')

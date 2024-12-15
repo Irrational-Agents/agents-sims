@@ -28,19 +28,18 @@ class UnityServer:
         
         # Command mappings
         self.command_map = {
-            'command.player.GetPlayerInfo': 'handle_get_player_info',
-            'command.npc.GetNPCs': 'handle_get_npcs',
-            'command.npc.GetNPCInfo': 'handle_get_npc_info',
-            'command.map.NPCNavigate': 'handle_npc_navigate',
-            'command.map.GetMapTown': 'get_map_town',
-            'command.map.GetMapScene': 'get_map_scene',
-            'command.config.GetEquipmentsConfig': 'get_equipments_config',
-            'command.config.GetBuildingsConfig': 'get_buildings_config',
-            'command.chat.NPCChatUpdate': 'npc_chat_update',
-            'ui.tick': self.update,
+            'player.getInfo': 'handle_get_player_info',
+            'npc.getList': 'handle_get_npcs',
+            'npc.getInfo': 'handle_get_npc_info',
             'map.getTownData.response': 'handle_map_data',
             'map.getSceneMetadata.response': 'handle_meta_data',
-            'config.getBlockData.response': 'handle_block_data'
+            'config.getBlockData.response': 'handle_block_data',
+            'ui.tick': 'update',
+            'chat.updateNPC': 'npc_chat_update',
+            'npc.navigate': 'handle_npc_navigate'
+            # discard for now
+            #'command.config.GetEquipmentsConfig': 'get_equipments_config',
+            #'command.config.GetBuildingsConfig': 'get_buildings_config',
         }
         
         # Register event handlers
@@ -81,6 +80,7 @@ class UnityServer:
         """Wait for a client connection within the specified timeout."""
         logger.debug(f"Waiting for client connection with timeout: {timeout}s")
         if self.connected_event.wait(timeout):
+            self.handlers.unity_request = self.unity_request
             logger.info("Client connected successfully.")
             return True
         logger.warning("Connection timeout exceeded.")
@@ -98,27 +98,6 @@ class UnityServer:
         self.unity_request.get_block_data()
         self.initiated = True
 
-    def update(self, sid: str, data: Dict[str, Any]):
-        """Handle updates from the client."""
-        try:
-            self.clock = int(data)
-            if self.clock == 0:
-                if not self.initiated:
-                    self.init()
-                if not self.handlers.map_data or not self.handlers.meta_data or not self.handlers.block_data:
-                    self.unity_request.send_server_tick(0)
-                else:
-                    self.map_translator = MapTranslator(
-                        self.handlers.map_data,
-                        self.handlers.meta_data,
-                        self.handlers.block_data
-                    )
-                    self.unity_request.send_server_tick(1)
-            else:
-                self.unity_request.send_server_tick(1)
-        except ValueError as e:
-            logger.error(f"Invalid data received for update: {data}. Error: {e}")
-
     def start(self, host: str = '0.0.0.0', port: int = 8080):
         """Start the Unity server."""
         logger.info(f"Starting Unity server on {host}:{port}")
@@ -132,7 +111,7 @@ if __name__ == '__main__':
     if server.wait_for_connection(timeout=30):  
         logger.info("Client connected, sending map request...")
         # server.unity_request.get_map_town()
-        server.unity_request.get_buildings_config()
+        #server.unity_request.get_buildings_config()
     else:
         logger.error("Timeout waiting for client connection.")
     
