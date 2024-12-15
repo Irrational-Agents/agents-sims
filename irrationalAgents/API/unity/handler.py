@@ -29,10 +29,9 @@ class UnityHandlers:
         # 游戏状态存储
         self.players = {}
         self.npcs = {}
-        self.map_data = {
-            'town': {'name': 'Test Town', 'size': {'width': 1000, 'height': 1000}},
-            'scene': {'name': 'Test Scene', 'objects': []}
-        }
+        self.map_data = None
+        self.meta_data = None
+        self.block_data = None
         self.configs = {
             'equipments': {'weapons': [], 'armors': []},
             'buildings': {'houses': [], 'shops': []}
@@ -144,3 +143,11 @@ class UnityHandlers:
     
     def get_buildings_config(self, config_info=None):
         logger.info(f'get buildings config, {config_info}')
+    def handle_map_data(self, sid: str, data: Dict[str, Any]):
+        self.map_data = data
+
+    def handle_meta_data(self, sid: str, data: Dict[str, Any]):
+        self.meta_data = data
+
+    def handle_block_data(self, sid: str, data: Dict[str, Any]):
+        self.block_data = data
