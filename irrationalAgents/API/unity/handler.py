@@ -40,27 +40,6 @@ class UnityHandlers:
             'buildings': {'houses': [], 'shops': []}
         }
 
-    def update(self, data: Dict[str, Any]):
-        """Handle updates from the client."""
-        try:
-            self.clock = int(data)
-            if self.clock == 0:
-                if not self.initiated:
-                    self.init()
-                if not self.map_data or not self.meta_data or not self.block_data:
-                    self.unity_request.send_server_tick(0)
-                else:
-                    self.map_translator = MapTranslator(
-                        self.map_data,
-                        self.meta_data,
-                        self.block_data
-                    )
-                    self.unity_request.send_server_tick(1)
-            else:
-                self.unity_request.send_server_tick(1)
-        except ValueError as e:
-            logger.error(f"Invalid data received for update: {data}. Error: {e}")
-
     def handle_get_npcs(self, params: Dict) -> Dict:
         """Handle request to get all NPCs"""
         try:

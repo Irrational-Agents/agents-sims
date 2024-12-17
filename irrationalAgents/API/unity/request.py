@@ -34,6 +34,11 @@ class UnityRequest:
         except Exception as e:
             logger.error(f"Error emitting event '{event_name}': {str(e)}")
 
+
+    def send_init(self, request_data: Optional[dict] = None) -> None:
+        """Send Init with npc data."""
+        self.emit("init", request_data)      
+
     def send_server_tick(self, request_data: Optional[dict] = None) -> None:
         """Send Server tick for frame to be updated."""
         self.emit("server.tick", request_data)   

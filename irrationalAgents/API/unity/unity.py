@@ -6,10 +6,16 @@ from logger_config import setup_logger
 from API.unity.handler import UnityHandlers
 from API.unity.request import UnityRequest
 from API.unity.map_translator import MapTranslator
+from API.unity.config import Config
 
 from datetime import datetime
+import json
+
 
 logger = setup_logger('API-unity')
+
+
+
 class UnityServer:
     def __init__(self):
         # Initialize socket.io server with CORS support
@@ -25,6 +31,7 @@ class UnityServer:
         self.handlers = UnityHandlers()
         self.connected_event = eventlet.Event()
         self.map_translator = None
+        self.unity_request = None
         
         # Command mappings
         self.command_map = {
@@ -37,9 +44,6 @@ class UnityServer:
             'ui.tick': 'update',
             'chat.updateNPC': 'npc_chat_update',
             'npc.navigate': 'handle_npc_navigate'
-            # discard for now
-            #'command.config.GetEquipmentsConfig': 'get_equipments_config',
-            #'command.config.GetBuildingsConfig': 'get_buildings_config',
         }
         
         # Register event handlers
@@ -93,15 +97,45 @@ class UnityServer:
     def init(self):
         """Perform server initialization tasks."""
         logger.info("Initializing server...")
-        self.unity_request.get_map_meta_data()
-        self.unity_request.get_map_data()
-        self.unity_request.get_block_data()
-        self.initiated = True
+       
+        sim_name = "the_ville_test"
+        sim_config = Config.get_sim_config(sim_name)
+        npc_config = Config.get_spawn_config(sim_name)
+
+        self.unity_request.send_init(json.dumps({**sim_config, **npc_config}))
+
+    # def update(self, data: Dict[str, Any]):
+    #     """Handle updates from the client."""
+    #     try:
+    #         self.clock = int(data)
+    #         if self.clock == 0:
+    #             if not self.initiated:
+    #                 self.init()
+    #             if not self.map_data or not self.meta_data or not self.block_data:
+    #                 self.unity_request.send_server_tick(0)
+    #             else:
+    #                 self.map_translator = MapTranslator(
+    #                     self.map_data,
+    #                     self.meta_data,
+    #                     self.block_data
+    #                 )
+    #                 self.unity_request.send_server_tick(1)
+    #         else:
+    #             self.unity_request.send_server_tick(1)
+    #     except ValueError as e:
+    #         logger.error(f"Invalid data received for update: {data}. Error: {e}")
 
     def start(self, host: str = '0.0.0.0', port: int = 8080):
         """Start the Unity server."""
         logger.info(f"Starting Unity server on {host}:{port}")
         eventlet.wsgi.server(eventlet.listen((host, port)), self.app)
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     server = UnityServer()
@@ -110,8 +144,7 @@ if __name__ == '__main__':
     logger.info("Waiting for client connection...")
     if server.wait_for_connection(timeout=30):  
         logger.info("Client connected, sending map request...")
-        # server.unity_request.get_map_town()
-        #server.unity_request.get_buildings_config()
+        server.init()
     else:
         logger.error("Timeout waiting for client connection.")
     
