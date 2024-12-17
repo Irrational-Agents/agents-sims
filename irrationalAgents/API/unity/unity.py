@@ -5,7 +5,6 @@ from typing import Dict, Any
 from logger_config import setup_logger
 from API.unity.handler import UnityHandlers
 from API.unity.request import UnityRequest
-from API.unity.map_translator import MapTranslator
 from API.unity.config import Config
 
 from datetime import datetime
@@ -24,8 +23,6 @@ class UnityServer:
         
         # State variables
         self.current_client_sid = None
-        self.clock = 0
-        self.initiated = False
         
         # Dependency initialization
         self.handlers = UnityHandlers()
@@ -36,14 +33,12 @@ class UnityServer:
         # Command mappings
         self.command_map = {
             'player.getInfo': 'handle_get_player_info',
-            'npc.getList': 'handle_get_npcs',
-            'npc.getInfo': 'handle_get_npc_info',
-            'map.getTownData.response': 'handle_map_data',
-            'map.getSceneMetadata.response': 'handle_meta_data',
-            'config.getBlockData.response': 'handle_block_data',
+            'npc.getList': 'handle_map_data',
+            'npc.getInfo': 'handle_map_data',
+            'map.data': 'handle_map_data',
             'ui.tick': 'update',
-            'chat.updateNPC': 'npc_chat_update',
-            'npc.navigate': 'handle_npc_navigate'
+            'chat.updateNPC': 'handle_map_data',
+            'npc.navigate': 'handle_map_data'
         }
         
         # Register event handlers
@@ -56,7 +51,7 @@ class UnityServer:
         
         for command, handler_name in self.command_map.items():
             @self.sio.on(command)
-            def event_handler(sid, data, command=command, handler_name=handler_name):
+            def event_handler(_, data, command=command, handler_name=handler_name):
                 handler = getattr(self.handlers, handler_name, None)
                 if handler:
                     logger.info(f"Received command: {command}")
@@ -65,7 +60,7 @@ class UnityServer:
                     logger.info(f"No handler found for command: {command}")
 
 
-    def on_connect(self, sid, environ):
+    def on_connect(self, sid, _):
         """Handle a new client connection."""
         self.current_client_sid = sid
         self.unity_request = UnityRequest(self.sio, self.current_client_sid)
@@ -104,26 +99,6 @@ class UnityServer:
 
         self.unity_request.send_init(json.dumps({**sim_config, **npc_config}))
 
-    # def update(self, data: Dict[str, Any]):
-    #     """Handle updates from the client."""
-    #     try:
-    #         self.clock = int(data)
-    #         if self.clock == 0:
-    #             if not self.initiated:
-    #                 self.init()
-    #             if not self.map_data or not self.meta_data or not self.block_data:
-    #                 self.unity_request.send_server_tick(0)
-    #             else:
-    #                 self.map_translator = MapTranslator(
-    #                     self.map_data,
-    #                     self.meta_data,
-    #                     self.block_data
-    #                 )
-    #                 self.unity_request.send_server_tick(1)
-    #         else:
-    #             self.unity_request.send_server_tick(1)
-    #     except ValueError as e:
-    #         logger.error(f"Invalid data received for update: {data}. Error: {e}")
 
     def start(self, host: str = '0.0.0.0', port: int = 8080):
         """Start the Unity server."""

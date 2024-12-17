@@ -43,25 +43,9 @@ class UnityRequest:
         """Send Server tick for frame to be updated."""
         self.emit("server.tick", request_data)   
 
-    def get_buildings_config(self, request_data=None):
-        self.emit("command.config.GetBuildingsConfig",request_data)
-    
-    def npc_chat_update(self, request_data=None):
-        self.emit("command.chat.NPCChatUpdate", request_data)
-        
-    def send_message(self, message):
-        self.emit("message", message)
     def get_map_data(self, request_data: Optional[dict] = None) -> None:
         """Request town map data."""
-        self.emit("map.getTownData", request_data)
-
-    def get_map_meta_data(self, request_data: Optional[dict] = None) -> None:
-        """Request map metadata."""
-        self.emit("map.getSceneMetadata", request_data)
-
-    def get_block_data(self, request_data: Optional[dict] = None) -> None:
-        """Request building configuration data."""
-        self.emit("config.getBlockData", request_data)
+        self.emit("map.getData", request_data)
 
     def npc_chat_update(self, request_data: Optional[dict] = None) -> None:
         """Update NPC chat data."""

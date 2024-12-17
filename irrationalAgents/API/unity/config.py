@@ -1,5 +1,18 @@
 import json
 
+def gen_agent_by_name(name):
+    root_dir = os.path.join(WORK_DIR,f'../storage/sample_data/agents/{name}')
+    if not os.path.exists(root_dir):
+        logger.error(f"agent {name} not exists!")
+        return None
+    
+    with open(os.path.join(root_dir, "basic_info.json"), 'r', encoding='utf-8') as f:
+        basic_info = json.load(f)
+    with open(os.path.join(root_dir, "memory/short_term.json"), 'r', encoding='utf-8') as f:
+        short_mem = json.load(f)
+    return basic_info, short_mem
+
+
 class Config:
     """
     A class to manage configuration files for simulations.
