@@ -1,31 +1,20 @@
 import json
 
-import logging
 
-from irrationalAgents.memory_modules.long_term_memory import *
-from irrationalAgents.memory_modules.short_term_memory import *
-from irrationalAgents.common_method import *
-from irrationalAgents.stimulus import *
-from irrationalAgents.agents_modules.behavior.plan import *
-from irrationalAgents.agents_modules.behavior.plan_evaluation import *
-from irrationalAgents.agents_modules.behavior.action import *
-from irrationalAgents.agents_modules.personality.cognition import *
-from irrationalAgents.agents_modules.personality.emotion import *
-from irrationalAgents.agents_modules.personality.personality import *
+from memory_modules.long_term_memory import *
+from memory_modules.short_term_memory import *
+from common_method import *
+from stimulus import *
+from agents_modules.behavior.plan import *
+from agents_modules.behavior.plan_evaluation import *
+from agents_modules.behavior.action import *
+from agents_modules.personality.cognition import *
+from agents_modules.personality.emotion import *
+from agents_modules.personality.personality import *
 
-logger = logging.getLogger(__name__)
+from logger_config import setup_logger
 
-def gen_agent_by_name(name):
-    # todo: load from meta.json
-    root_dir = f"storage/sample_data/agents/{name}"
-    if not os.path.exists(root_dir):
-        logger.error(f"agent {name} not exists!")
-        return None
-    
-    with open(os.path.join(root_dir, "basic_info.json"), 'r', encoding='utf-8') as f:
-        basic_info = json.load(f)
-    memory_folder_path = os.path.join(root_dir, "memory")
-    return Agent(basic_info, memory_folder_path)
+logger = setup_logger('Agent')
 
 class Agent:
     def __init__(self, basic_info, memory_folder_path=False):
@@ -41,7 +30,6 @@ class Agent:
         short_memory_path = f"{memory_folder_path}/short_term.json"
         self.short_memory = ShortTermMemory(short_memory_path)
 
-        # todo: no need to generate every time
         if basic_info.get('personality'):
             self.short_memory.personality_text = basic_info.get('personality')
         else:
@@ -76,7 +64,7 @@ class Agent:
 
 
 
-    def move(self, curr_time, event):
+    def move(self, agents_list,curr_time, event):
         
         #eventは後で修正する。(多分マップの方で取り扱いそう)testチャットよう。
         #[event] will be removed after connecting Unity

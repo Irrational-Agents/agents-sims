@@ -1,3 +1,8 @@
+# Websocket Configuration
+
+socket_url = "https://orange-cliff-0b3a9151e.5.azurestaticapps.net:8080" # dev
+WORK_DIR = '/Users/wangyifei/code/Agents-Sim/irrationalAgents'
+
 # Action configuration
 AVAILABLE_ACTIONS = ["moving", "interacting", "thinking", "sleeping"]
 ACTION_COOLDOWN = 5  # seconds
