@@ -5,7 +5,7 @@ from typing import Dict, Any
 from logger_config import setup_logger
 from API.unity.handler import UnityHandlers
 from API.unity.request import UnityRequest
-from API.unity.config import Config
+from irrationalAgents.API.unity.config import Config
 
 from datetime import datetime
 import json
@@ -33,14 +33,13 @@ class UnityServer:
         # Command mappings
         self.command_map = {
             'player.getInfo': 'handle_get_player_info',
-            'npc.getList': 'handle_map_data',
-            'npc.getInfo': 'handle_map_data',
+            'npc.getList': 'handle_get_npc_list', #API
+            'npc.getInfo': 'handle_get_npc_info', #API
             'map.data': 'handle_map_data',
             'ui.tick': 'update',
-            'chat.updateNPC': 'handle_map_data',
-            'npc.navigate': 'handle_map_data'
+            'chat.updateNPC': 'handle_chat',
+            'npc.navigate': 'handle_npc_navigate'
         }
-        
         # Register event handlers
         self.register_event_handlers()
 
@@ -109,17 +108,14 @@ class UnityServer:
 
 
 
-
-
-
 if __name__ == '__main__':
     server = UnityServer()
     server.start_background()
 
     logger.info("Waiting for client connection...")
-    if server.wait_for_connection(timeout=30):  
+    if server.wait_for_connection(timeout=30): 
+        server.init() 
         logger.info("Client connected, sending map request...")
-        server.init()
     else:
         logger.error("Timeout waiting for client connection.")
     
