@@ -1,4 +1,4 @@
-from prompt.llm_command_list import *
+from irrationalAgents.prompt.llm_command_list import *
 from collections import Counter
 
 def growth(self):

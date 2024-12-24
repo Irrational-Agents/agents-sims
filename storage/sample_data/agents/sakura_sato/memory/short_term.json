@@ -56,18 +56,146 @@
       "activity": "Prepare for bed"
     }
   ],
-  "short_memory": [
+  "daily_plan_req": [
     {
-      "time": "11:30",
-      "date": "2024-09-16",
-      "moccupying": 2,
-      "description": "Class ends and I head to the cafeteria"
+      "time": "00:00",
+      "activity": "Read a novel by Haruki Murakami",
+      "moccupying": 1,
+      "intervals": 4
     },
     {
-      "time": "11:45",
-      "date": "2024-09-16",
+      "time": "01:00",
+      "activity": "Reflect on the day in a journal",
       "moccupying": 2,
-      "description": "Have lunch with Kenta Takahashi while chatting"
+      "intervals": 2
+    },
+    {
+      "time": "01:30",
+      "activity": "Sleep",
+      "moccupying": 1,
+      "intervals": 24
+    },
+    {
+      "time": "07:30",
+      "activity": "Wake up and stretch",
+      "moccupying": 1,
+      "intervals": 1
+    },
+    {
+      "time": "07:45",
+      "activity": "Personal hygiene routine",
+      "moccupying": 1,
+      "intervals": 2
+    },
+    {
+      "time": "08:15",
+      "activity": "Breakfast with family",
+      "moccupying": 2,
+      "intervals": 2
+    },
+    {
+      "time": "08:45",
+      "activity": "Travel to university",
+      "moccupying": 1,
+      "intervals": 2
+    },
+    {
+      "time": "09:15",
+      "activity": "Attend literary theory class",
+      "moccupying": 1,
+      "intervals": 6
+    },
+    {
+      "time": "10:45",
+      "activity": "Study session in the library with Hanako",
+      "moccupying": 2,
+      "intervals": 6
+    },
+    {
+      "time": "12:15",
+      "activity": "Lunch at a nearby café",
+      "moccupying": 1,
+      "intervals": 3
+    },
+    {
+      "time": "13:00",
+      "activity": "Attend creative writing workshop",
+      "moccupying": 1,
+      "intervals": 6
+    },
+    {
+      "time": "14:30",
+      "activity": "Work on short story draft",
+      "moccupying": 3,
+      "intervals": 4
+    },
+    {
+      "time": "15:30",
+      "activity": "Meet with literary club members",
+      "moccupying": 2,
+      "intervals": 6
+    },
+    {
+      "time": "17:00",
+      "activity": "Reflect on workshop feedback",
+      "moccupying": 2,
+      "intervals": 2
+    },
+    {
+      "time": "17:30",
+      "activity": "Travel back home",
+      "moccupying": 1,
+      "intervals": 2
+    },
+    {
+      "time": "18:00",
+      "activity": "Help younger sister with homework",
+      "moccupying": 2,
+      "intervals": 4
+    },
+    {
+      "time": "19:00",
+      "activity": "Dinner with family",
+      "moccupying": 2,
+      "intervals": 2
+    },
+    {
+      "time": "19:30",
+      "activity": "Edit short story based on feedback",
+      "moccupying": 3,
+      "intervals": 6
+    },
+    {
+      "time": "21:00",
+      "activity": "Leisure time - watch a Japanese film",
+      "moccupying": 1,
+      "intervals": 6
+    },
+    {
+      "time": "22:30",
+      "activity": "Wind down with light reading",
+      "moccupying": 1,
+      "intervals": 4
+    },
+    {
+      "time": "23:30",
+      "activity": "Prepare for bed",
+      "moccupying": 1,
+      "intervals": -94
+    },
+    {
+      "time": "00:00",
+      "activity": "Sleep",
+      "moccupying": 1,
+      "intervals": 96
+    }
+  ],
+  "short_memory": [
+    {
+      "time": "00:00",
+      "date": "2024-09-16",
+      "moccupying": 1,
+      "description": "Hello"
     }
   ],
   "basic_needs": {
@@ -84,5 +212,13 @@
     "agreeableness": 0.1,
     "neuroticism": -0.2
   },
-  "emotion": [6, 0, 0, 0, 1, 0, 3]
+  "emotion": [
+    6,
+    0,
+    0,
+    0,
+    1,
+    0,
+    3
+  ]
 }

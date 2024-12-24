@@ -1,18 +1,18 @@
 import json
 
 
-from memory_modules.long_term_memory import *
-from memory_modules.short_term_memory import *
-from common_method import *
-from stimulus import *
-from agents_modules.behavior.plan import *
-from agents_modules.behavior.plan_evaluation import *
-from agents_modules.behavior.action import *
-from agents_modules.personality.cognition import *
-from agents_modules.personality.emotion import *
-from agents_modules.personality.personality import *
+from irrationalAgents.memory_modules.long_term_memory import *
+from irrationalAgents.memory_modules.short_term_memory import *
+from irrationalAgents.common_method import *
+from irrationalAgents.stimulus import *
+from irrationalAgents.agents_modules.behavior.plan import *
+from irrationalAgents.agents_modules.behavior.plan_evaluation import *
+from irrationalAgents.agents_modules.behavior.action import *
+from irrationalAgents.agents_modules.personality.cognition import *
+from irrationalAgents.agents_modules.personality.emotion import *
+from irrationalAgents.agents_modules.personality.personality import *
 
-from logger_config import setup_logger
+from irrationalAgents.logger_config import setup_logger
 
 logger = setup_logger('Agent')
 

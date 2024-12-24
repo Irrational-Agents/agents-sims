@@ -3,6 +3,11 @@ from irrationalAgents.agent import Agent
 import json
 import os
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+import os
+
+# Load .env file
+load_dotenv()
 
 def main():
     # basic_info.jsonを読み込む
