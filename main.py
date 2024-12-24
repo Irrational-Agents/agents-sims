@@ -2,11 +2,6 @@
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
-import subprocess
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
 
 class EchoWebSocket(tornado.websocket.WebSocketHandler):
     """
@@ -58,6 +53,4 @@ if __name__ == "__main__":
     app = make_app()
     app.listen(8000,  address='0.0.0.0')
     print("WebSocket server is listening on ws://0.0.0.0:8000/ws")
-    # subprocess.Popen(['python', 'test.py'])
-    subprocess.Popen(['python', 'test2.py'])
     tornado.ioloop.IOLoop.current().start()
