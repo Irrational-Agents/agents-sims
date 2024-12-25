@@ -10,15 +10,11 @@ api_key = os.getenv('OPENAI_API_KEY')
 client = wrap_openai(OpenAI(api_key=api_key))
 
 @traceable(name="generative_agent")
-def generative_agent(system_content, user_content, max_retries=3):
+def generative_agent(user_content):
     try:
         completion = client.chat.completions.create(
             model="gpt-4o-mini-2024-07-18",
             messages=[
-                {
-                "role": "system",
-                "content": system_content
-                },
                 {
                 "role": "user",
                 "content": user_content
@@ -75,8 +71,7 @@ def generate_daily_plan(agent_name, agent_profile, current_emotion, previous, cu
         current_date=current_date
     )
 
-    system_content = "You are an AI assistant tasked with generating a character's daily schedule by combining given information."
-    response = generative_agent(system_content, prompt)
+    response = generative_agent(prompt)
     logger.info(f"daily plan response: {response}")
     try:
         parsed_response = json.loads(response)
@@ -99,9 +94,8 @@ def generate_conversation(agent_name, agent_profile, current_emotion, plan, rece
         current_time=current_time,
         current_date=current_date
     )
-    
-    system_content = "You are an AI assistant tasked with generating brief, context-appropriate actions or conversations based on given plans and events."
-    response = generative_agent(system_content, prompt)
+
+    response = generative_agent(prompt)
     print(response)
     try:
         parsed_response = json.loads(response)
@@ -119,8 +113,7 @@ def generate_personality(traits):
         
         prompt = prompt_template.format(traits=traits_str)
         
-        system_content = "You are an AI assistant specialized in creating concise and insightful personality profiles based on given personality traits."
-        personality_profile = generative_agent(system_content, prompt)
+        personality_profile = generative_agent(prompt)
         print(personality_profile)
         return personality_profile
 
@@ -136,9 +129,8 @@ def generate_short_memory(agent_name, current_emotion, personality_traits, relat
         past_short_term_memories=past_memories,
         perceived_events=perceived_events
     )
-    
-    system_content = "You are an AI assistant tasked with updating an agent's short-term memory and emotional state based on perceived events and context."
-    response = generative_agent(system_content, prompt)
+
+    response = generative_agent(prompt)
     print(response)
     try:
         parsed_response = json.loads(response)
@@ -146,3 +138,72 @@ def generate_short_memory(agent_name, current_emotion, personality_traits, relat
     except json.JSONDecodeError:
         print("Error: Invalid JSON format in response.")
         return None
+    
+@traceable(name="extract_keywords")
+def extract_keywords_for_long_term_memory(description):
+    with open('irrationalAgents/prompt/prompt_templates/extract_keywords_prompt.txt', 'r') as file:
+            prompt = file.read()
+    prompt = prompt.format(
+        description=description
+    )
+
+    response = generative_agent(prompt)
+    print(response)
+    try:
+        parsed_response = json.loads(response)
+        if isinstance(parsed_response, list):
+            return parsed_response
+        else:
+            # If it's not a list, return empty or handle accordingly
+            return []
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON format in response.")
+        return []
+    
+def generate_short_memory(agent_name, current_emotion, personality_traits, relationships, past_memories, perceived_events):
+    with open('irrationalAgents/prompt/prompt_templates/short_memory_prompt.txt', 'r') as file:
+            prompt_template = file.read()
+    prompt = prompt_template.format(
+        agent_name=agent_name,
+        current_emotion=current_emotion, 
+        personality_traits=personality_traits,
+        relationships=relationships,
+        past_short_term_memories=past_memories,
+        perceived_events=perceived_events
+    )
+
+    response = generative_agent(prompt)
+    print(response)
+    try:
+        parsed_response = json.loads(response)
+        return parsed_response
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON format in response.")
+        return None
+    
+def get_llm_responses_and_scores_and_outcome(conversation):
+    with open('irrationalAgents/prompt/prompt_templates/scores_and_outcome_prompt.txt', 'r') as file:
+            prompt_template = file.read()
+    prompt = prompt_template.format(conversation=conversation)
+
+    for _ in 3:
+        try:
+            response = generative_agent(prompt)
+            parsed_response = json.loads(response)
+            
+            # Validate structure and types
+            if all(key in parsed_response for key in ["candidate_responses", "probabilities", "outcomes"]):
+                candidate_responses = parsed_response["candidate_responses"]
+                probabilities = parsed_response["probabilities"]
+                outcomes = parsed_response["outcomes"]
+
+                if isinstance(candidate_responses, list) and \
+                   all(isinstance(p, (int, float)) for p in probabilities) and \
+                   all(isinstance(o, (int, float)) for o in outcomes):
+                    return candidate_responses, probabilities, outcomes
+        except (json.JSONDecodeError, KeyError, TypeError):
+            pass
+
+    print("Error: Invalid JSON format in response.")
+    return None
+    

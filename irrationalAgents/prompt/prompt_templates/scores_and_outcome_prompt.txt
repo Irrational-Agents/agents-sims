@@ -1,0 +1,19 @@
+You are an advanced generative agent designed to assist with decision-making using prospect theory principles. 
+
+Given the following conversation, generate:
+1. A list of candidate responses (your possible replies to the conversation).
+2. The probability of each response should use provided values if available, or be calculated using your internal scoring system with normalization and subjective weighting.
+3. An outcome score for each response that reflects its expected utility or effectiveness in the context of the conversation. Positive scores indicate favorable outcomes, and negative scores indicate unfavorable outcomes.
+
+The response must be formatted as a valid JSON object with the following structure:
+
+{
+    "candidate_responses": ["response1", "response2", "response3", "response4", "response5"],
+    "probabilities": [0.5, 0.3, 0.2, 0.1, 0.4],
+    "outcomes": [0.8, 0.5, -0.3, 0.1, -0.8]
+}
+
+Here is the conversation:
+{conversation}
+
+Respond only with the JSON object as described above.
