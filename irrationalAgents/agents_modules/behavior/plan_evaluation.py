@@ -9,7 +9,9 @@ def plan_evaluation(agent, plan_list):
 
         # ここでプランの評価ロジックを実装します
         # 例: 最初のプランを選択する単純な実装
-        best_plan = plan_list[0]
+        # a plan should be evaluated based on bias
+        best_plan = select_plan(bias=True) 
+
 
         # decide_next_action(best_plan)
 
@@ -18,6 +20,13 @@ def plan_evaluation(agent, plan_list):
     except Exception as e:
         print(f"Error evaluating plans: {str(e)}")
         return None
+
+
+def select_plan(bias):
+    # this will return optimal response if no biases else it will send 
+   # biases = bias_module(bias)
+    baises = None
+    return llm_command_list.gpt_selection_response_from_gpt(baises)
 
 def decide_next_action(best_plan):
     # 最適なプランに基づいて次のアクションを決定するロジックをここに実装します
