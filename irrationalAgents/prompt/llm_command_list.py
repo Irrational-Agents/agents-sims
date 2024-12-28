@@ -146,3 +146,28 @@ def generate_short_memory(agent_name, current_emotion, personality_traits, relat
     except json.JSONDecodeError:
         print("Error: Invalid JSON format in response.")
         return None
+    
+
+@traceable(name="exp_llm")
+def generate_experiment_llm(agent_name, current_emotion, personality_traits, past_memories, stimulus):
+    with open('./irrationalAgents/experiments/prompt/llm_prompt.txt', 'r') as file:
+            prompt_template = file.read()
+    prompt = prompt_template.format(
+        name=agent_name,
+        agent_emotion=current_emotion, 
+        agent_traits=personality_traits,
+        short_memory=past_memories,
+        economic_question=stimulus
+    )
+    
+    system_content = "You are an individual with the following personality traits and emotions. Based on these characteristics, You will engage in economic behavior conversations using this format:"
+    
+    response = generative_agent(system_content, prompt)
+    print(response)
+    try:
+        parsed_response = json.loads(response)
+        return parsed_response
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON format in response.")
+        return None
+    
