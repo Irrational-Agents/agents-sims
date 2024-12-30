@@ -1,0 +1,12 @@
+{
+    "2024-12-30 11:22:17": {
+        "User": "In a game where everyone picks a number 0-100, and the goal is to pick 1/2 of the average number chosen, what would you pick?",
+        "Leo Ivanov": "I would choose something low, around 10. It seems the safest bet in this kind of unpredictable situation.",
+        "Response_emotion": "disgust"
+    },
+    "2024-12-30 11:22:48": {
+        "User": "If we played this game again, would you change your number?",
+        "Leo Ivanov": "I might stick with my choice; the unpredictability is unsettling to me.",
+        "Response_emotion": "disgust"
+    }
+}

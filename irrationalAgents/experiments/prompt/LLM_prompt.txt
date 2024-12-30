@@ -6,7 +6,7 @@ Short Memory: {short_memory}
 
 Conversation Format:
 
-{{"User": "{economic_question}", "{name}": "[concise answer aligned with traits and emotions]", "Response_emotion": "[emotion and rate after this question]"}}
+{{"User": "{economic_question}", "{name}": "[concise answer aligned with traits and emotions]", "Response_emotion": "{agent_emotion}"}}
 
 
 {name} Response Guidelines:

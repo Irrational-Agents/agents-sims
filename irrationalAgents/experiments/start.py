@@ -43,10 +43,10 @@ class Agent:
                 
                 memory_items = [(k, v) for k, v in memories.items()]
                 
-                memory_items.sort(key=lambda x: x[1]['timestamp'], reverse=True)
+                memory_items.sort(key=lambda x: x[1], reverse=True)
                 
                 # 取最近3条
-                recent_memories = dict(memory_items[:3])
+                recent_memories = dict(memory_items[:5])
                 
                 return recent_memories
         else:
@@ -58,9 +58,7 @@ class Agent:
 
 
 def load_agents_from_personas():
-    columns = ['Name', 'Openness', 'Conscientiousness', 'Extraversion', 'Agreeableness', 
-              'Neuroticism', 'anger', 'disgust', 'fear', 'happiness', 'sadness', 
-              'surprise', 'neutral']
+    columns = ['Name', 'Openness', 'Conscientiousness', 'Extraversion', 'Agreeableness', 'Neuroticism', 'Dominance_emotion']
     
     categorical_map = {
         'low': 0.3,
@@ -82,16 +80,7 @@ def load_agents_from_personas():
                 'Agreeableness': categorical_map.get(parts[4].lower(), parts[4]),
                 'Neuroticism': categorical_map.get(parts[5].lower(), parts[5])
             }
-            
-            emotions = {
-                'anger': float(parts[6]),
-                'disgust': float(parts[7]),
-                'fear': float(parts[8]),
-                'happiness': float(parts[9]),
-                'sadness': float(parts[10]),
-                'surprise': float(parts[11]),
-                'neutral': float(parts[12])
-            }
+            emotions = parts[6]
             
             agents.append(Agent(name, traits, emotions))
             
@@ -104,15 +93,17 @@ def load_economic_questions():
 def main():
     """simple start for test"""
     agents = load_agents_from_personas()
+    agent = agents[0]
     
     #https://uowmailedu-my.sharepoint.com/:w:/r/personal/ka481_uowmail_edu_au/_layouts/15/doc2.aspx?sourcedoc=%7BF4ADC3A6-0D9E-4D07-95B8-4C44C42DFD55%7D&file=Write%20the%20plan.docx&action=default&mobileredirect=true&wdOrigin=OFFICE-OFFICE-METAOS.FILEBROWSER.FILES-FOLDER
     #questions = load_economic_questions()
-    questions = ["""You have two options: A: 80% chance to win $100 B: 100% chance to win $70 Which would you choose and why?"""]
-    for question in questions:
+    print(f"test agent: {agent.name}: {agent.traits}")
+    while True:
+        question = input("Q:  ")
         response = generate_experiment_llm(\
-            agents[0].name, agents[0].emotional_profile, agents[0].traits, agents[0].get_memory(), question)
+            agent.name, agent.emotional_profile, agent.traits, agent.get_memory(), question)
         
-        agents[0].save_memory(response)
+        agent.save_memory(response)
 
 
 if __name__ == "__main__":
