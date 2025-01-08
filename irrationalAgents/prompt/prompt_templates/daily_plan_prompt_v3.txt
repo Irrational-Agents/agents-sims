@@ -1,0 +1,12 @@
+Agent name: {agent_name}
+Agent profile: {agent_profile}
+
+Based on the above information, generate a detailed daily routine plans for {agent_name}. The plan should:
+- Reflect {agent_name}’s work, personal life, and socizhaal interactions.
+- Include basic daily routines such as waking up, personal hygiene, meals, and leisure activities.
+- Strike a balance between productivity and rest, ensuring time is dedicated to work, hobbies, and relaxation.
+
+
+Please format your response as a JSON list of strings, like below. Do not include any additional text, markdown formatting, or explanations outside the JSON array:
+
+[{{"activity": "an activity example","moccupying": 1}}]
