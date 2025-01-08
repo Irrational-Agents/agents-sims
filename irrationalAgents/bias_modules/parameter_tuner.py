@@ -1,15 +1,8 @@
-from prompt.llm_command_list import *
-
-def calculate_probabilities_and_outcomes(conversation):
-    candidate_responses, probabilities, outcomes = get_llm_responses_and_scores_and_outcome(conversation)
-
-    total_prob = sum(probabilities)
-    normalized_probabilities = [p / total_prob for p in probabilities]
-
-    return candidate_responses, normalized_probabilities, outcomes
-
-
 def determine_parameters(emotion, personality):
+    """
+    感情(emotion)、性格(personality)情報を元に
+    α, β, γ, λ を動的に決定する。
+    """
     # Default parameters
     alpha, beta, gamma, lambda_ = 0.8, 0.8, 0.9, 1.5
 
@@ -28,7 +21,7 @@ def determine_parameters(emotion, personality):
         alpha, beta, gamma, lambda_ = 0.8, 0.7, 0.6, 1.3
     elif emotion == "neutral":
         alpha, beta, gamma, lambda_ = 0.8, 0.8, 0.9, 1.5
-    
+
     # Big Five
     personality_influence = {
         "Openness": {"high": 0.1, "neutral": 0.0, "low": -0.1},
@@ -48,37 +41,19 @@ def determine_parameters(emotion, personality):
         elif trait == "Extraversion":
             alpha += personality_influence[trait][level]
             gamma += personality_influence[trait][level]
-            lambda_ -= 0.1 if level == "high" else (-0.1 if level == "low" else 0.0)
+            if level == "high":
+                lambda_ -= 0.1
+            elif level == "low":
+                lambda_ += 0.1
         elif trait == "Agreeableness":
             beta += personality_influence[trait][level]
             lambda_ += personality_influence[trait][level]
         elif trait == "Neuroticism":
             alpha += personality_influence[trait][level]
             beta += personality_influence[trait][level]
-            lambda_ += 0.2 if level == "high" else (-0.2 if level == "low" else 0.0)
+            if level == "high":
+                lambda_ += 0.2
+            elif level == "low":
+                lambda_ -= 0.2
 
     return alpha, beta, gamma, lambda_
-
-def prospect_theory_module(conversation, emotion, personality):
-    # Step 1: Get candidate responses, normalized probabilities, and outcomes
-    candidate_responses, probabilities, outcomes = calculate_probabilities_and_outcomes(conversation)
-
-    # Step 2: Determine parameters
-    alpha, beta, gamma, lambda_ = determine_parameters(emotion, personality)
-
-    # Step 3: Calculate scores using Prospect Theory
-    scores = []
-    for i in range(len(candidate_responses)):
-        if outcomes[i] >= 0:
-            value = outcomes[i] ** alpha
-        else:
-            value = -lambda_ * ((-outcomes[i]) ** beta)
-
-        weighted_prob = (probabilities[i] ** gamma) / (
-            (probabilities[i] ** gamma + (1 - probabilities[i]) ** gamma) ** (1 / gamma)
-        )
-
-        score = value * weighted_prob
-        scores.append(score)
-
-    return candidate_responses, scores
