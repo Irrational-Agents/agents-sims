@@ -1,0 +1,21 @@
+Agent: {agent_name}
+Agent profile: {agent_profile}
+Current emotion: {current_emotion}
+Risk preference value: {risk_aversion_value}  # Generated dynamically
+Plan: {plan}
+Recent Events: {recent_events}
+Current Time: {current_time}
+Current Date: {current_date}
+
+Based on the information above, generate a realistic conversation between {agent_name} and others. The conversation should:
+
+- Reflect the agent's risk aversion: If the risk aversion is high, the agent will prefer safe choices.
+- If the agent was discussing a risky option earlier (in Recent Events), make sure the current conversation ties back to that.
+- Be natural, engaging, and no longer than 20 words.
+
+Please format the conversation as follows:
+[
+    "{agent_name}",
+    "[The person or thing the action is directed towards]",
+    "[Brief conversation, maximum 20 words]"
+]
