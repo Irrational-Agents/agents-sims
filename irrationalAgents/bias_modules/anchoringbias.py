@@ -1,29 +1,42 @@
-# anchoring_bias.py
-def anchoring_bias_module(personality, emotion, conversation_history, response_candidates, initial_scores, response_values, beta=0.5):
-    """
-    Adjust decision scores using Anchoring Bias, integrated with Prospect Theory and Fairness.
-    
-    Arguments:
-    - personality: A dictionary of Big Five traits.
-    - emotion: Current emotional state of the agent.
-    - conversation_history: Context of prior interactions.
-    - response_candidates: List of response options.
-    - initial_scores: Initial scores for the responses.
-    - response_values: Estimated values of the responses.
-    - beta: Sensitivity to anchoring (default=0.5).
-    
-    Returns:
-    - Updated scores list with Anchoring Bias applied.
-    """
-    # Step 1: Calculate anchor dynamically from response values (e.g., mean or median)
-    anchor = sum(response_values) / len(response_values)
+from prompt.llm_command_list import get_llm_responses_and_scores_and_outcome
 
-    # Step 2: Adjust scores based on Anchoring Bias
-    adjusted_scores = []
+def anchoring_bias_module(personality, emotion, conversation_history, response_candidates, score_lists):
+    """
+    Adjust scores based on Anchoring Bias, considering personality, emotion, and Prospect Theory.
+    """
+    # Step 1: Fetch responses, probabilities, and outcomes dynamically
+    candidate_responses, probabilities, outcomes = get_llm_responses_and_scores_and_outcome(conversation_history)
+
+    # Step 2: Set fallback for outcomes if necessary
+    other_payoffs = outcomes if outcomes else [10, 20, 15]
+
+    # Step 3: Determine parameters based on personality and emotion
+    alpha, beta, gamma, lambda_ = determine_parameters(emotion, personality)
+
+    # Step 4: Get the first response (anchor) and adjust other responses based on it
+    anchor_value = score_lists[0]  # Assume the first response is the anchor
+    updated_scores = []
+
     for i, response in enumerate(response_candidates):
-        distance_from_anchor = abs(response_values[i] - anchor)
-        anchoring_penalty = beta * distance_from_anchor
-        adjusted_score = initial_scores[i] - anchoring_penalty  # Apply penalty based on distance from anchor
-        adjusted_scores.append(adjusted_score)
+        agent_payoff = score_lists[i]  # Agent's payoff is the initial score
 
-    return adjusted_scores, anchor
+        # Anchoring utility adjustment
+        anchor_score = anchor_utility(agent_payoff, anchor_value)
+
+        # Prospect theory adjustment
+        value = prospect_theory_value(score_lists[i], alpha, beta, lambda_)
+        probability = probability_weighting(probabilities[i] if probabilities else 0.8, gamma)
+
+        # Final score combines anchoring and prospect theory
+        final_score = anchor_score + value * probability
+        updated_scores.append(final_score)
+
+    return updated_scores
+
+
+def anchor_utility(agent_payoff, anchor_value):
+    """
+    Adjust score based on the anchoring effect. The closer the agent's payoff is to the anchor, 
+    the higher the score.
+    """
+    return abs(agent_payoff - anchor_value)  # Example: smaller difference means higher score
