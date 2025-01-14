@@ -1,0 +1,21 @@
+Agent: {agent_name}
+Agent profile: {agent_profile}
+Current emotion: {current_emotion}
+Previous investments: {previous_investments}  # Generated dynamically
+Plan: {plan}
+Recent Events: {recent_events}
+Current Time: {current_time}
+Current Date: {current_date}
+
+Based on the information above, generate a realistic conversation between {agent_name} and others. The conversation should:
+
+- Reflect the agent’s sunk cost bias: If the agent has invested heavily in a past decision, they may continue pursuing it despite new information.
+- If recent events involved previous investments, the agent should consider them in the current conversation.
+- Be natural, engaging, and no longer than 20 words.
+
+Please format the conversation as follows:
+[
+    "{agent_name}",
+    "[The person or thing the action is directed towards]",
+    "[Brief conversation, maximum 20 words]"
+]
