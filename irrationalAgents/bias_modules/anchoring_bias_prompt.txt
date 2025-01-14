@@ -1,0 +1,7 @@
+Agent Profile: {agent_profile}
+Current Emotion: {current_emotion}
+Conversation History: {previous}
+
+Determine the anchor value for the decision-making process:
+- Consider fairness principles and dynamic context from the conversation.
+- Return the calculated anchor value and explain its basis.
