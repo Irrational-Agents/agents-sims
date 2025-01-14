@@ -1,0 +1,7 @@
+Agent Profile: {agent_profile}
+Current Emotion: {current_emotion}
+Conversation History: {previous}
+
+Simulate the endowment effect:
+- Evaluate how much the agent values owned items compared to items not yet acquired.
+- Return the perceived value of the item the agent possesses and a comparative value for new items.
