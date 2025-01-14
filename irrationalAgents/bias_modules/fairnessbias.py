@@ -1,32 +1,23 @@
-from prompt.llm_command_list import get_llm_responses_and_scores_and_outcome
+from llm_command_list import generate_fairness_parameters, generate_other_payoffs
+import random
 
-def fairness_bias_module(personality, emotion, conversation_history, response_candidates, score_lists):
+def fairness_bias(agent_profile, current_emotion, conversation_history, response_candidates, score_lists):
     """
-    Adjust scores based on Fairness Bias, considering personality, emotion, and Prospect Theory.
+    Adjust scores based on Fairness Bias, considering personality, emotion, and fairness utility.
     """
-    # Step 1: Fetch responses, probabilities, and outcomes dynamically
-    candidate_responses, probabilities, outcomes = get_llm_responses_and_scores_and_outcome(conversation_history)
+    # Step 1: Use LLM to generate fairness parameters (alpha, beta) dynamically based on profile and emotion
+    fairness_params = generate_fairness_parameters(agent_profile, current_emotion)  # Prompt to generate alpha, beta
+    other_payoffs = generate_other_payoffs(conversation_history, len(response_candidates))  # Prompt to generate other payoffs
 
-    # Step 2: Set fallback for outcomes if necessary
-    other_payoffs = outcomes if outcomes else [10, 20, 15]
-
-    # Step 3: Determine parameters based on personality and emotion
-    alpha, beta, gamma, lambda_ = determine_parameters(emotion, personality)
-
-    # Step 4: Process each response candidate
-    updated_scores = []
-    for i, response in enumerate(response_candidates):
-        agent_payoff = score_lists[i]  # Agent's payoff is the initial score
-
-        # Fairness utility adjustment
+    # Extract alpha and beta values from the generated parameters
+    alpha = fairness_params['alpha']
+    beta = fairness_params['beta']
+    
+    # Step 2: Fairness Utility Calculation (can be customized for each agent's payoff)
+    adjusted_scores = []
+    for i, score in enumerate(score_lists):
+        agent_payoff = score
         fairness_score = fairness_utility(agent_payoff, other_payoffs, alpha, beta)
-
-        # Prospect theory adjustment
-        value = prospect_theory_value(score_lists[i], alpha, beta, lambda_)
-        probability = probability_weighting(probabilities[i] if probabilities else 0.8, gamma)
-
-        # Final score combines fairness and prospect theory
-        final_score = fairness_score + value * probability
-        updated_scores.append(final_score)
-
-    return updated_scores
+        adjusted_scores.append(fairness_score)
+    
+    return adjusted_scores
