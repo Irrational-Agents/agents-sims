@@ -1,0 +1,8 @@
+Agent Profile: {agent_profile}
+Current Emotion: {current_emotion}
+Conversation History: {previous}
+
+Analyze the agent's risk preference:
+- Consider the personality traits and emotional state.
+- Determine whether the agent prefers low-risk, moderate-risk, or high-risk options.
+- Return a risk preference metric (e.g., scale from 0 to 1).
