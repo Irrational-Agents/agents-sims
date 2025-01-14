@@ -1,0 +1,7 @@
+Agent Profile: {agent_profile}
+Current Emotion: {current_emotion}
+Conversation History: {previous}
+
+Based on the agent's traits and current emotional state, calculate the fairness utility:
+- Consider the agent's payoff compared to other participants.
+- Return the other participants' payoffs and any fairness-related metrics.
