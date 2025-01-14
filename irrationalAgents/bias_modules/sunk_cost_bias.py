@@ -1,39 +1,18 @@
-from prompt.llm_command_list import get_llm_responses_and_scores_and_outcome
+from prompt.llm_command_list import *
 
-def sunk_cost_bias_module(personality, emotion, conversation_history, response_candidates, score_lists):
+def sunk_cost_bias(agent_profile, current_emotion, conversation_history, response_candidates, score_lists):
     """
-    Adjust scores based on Sunk Cost Bias, considering personality, emotion, and Prospect Theory.
+    Adjust scores based on Sunk Cost Bias using previous investments.
     """
-    # Step 1: Fetch responses, probabilities, and outcomes dynamically
-    candidate_responses, probabilities, outcomes = get_llm_responses_and_scores_and_outcome(conversation_history)
-
-    # Step 2: Set fallback for outcomes if necessary
-    other_payoffs = outcomes if outcomes else [10, 20, 15]
-
-    # Step 3: Determine parameters based on personality and emotion
-    alpha, beta, gamma, lambda_ = determine_parameters(emotion, personality)
-
-    # Step 4: Adjust based on sunk cost effect (greater investment increases perceived value)
-    updated_scores = []
-    for i, response in enumerate(response_candidates):
-        agent_payoff = score_lists[i]  # Agent's payoff is the initial score
-
-        # Sunk cost bias adjustment (higher score for higher investment)
-        sunk_cost_score = sunk_cost_utility(agent_payoff)
-
-        # Prospect theory adjustment
-        value = prospect_theory_value(score_lists[i], alpha, beta, lambda_)
-        probability = probability_weighting(probabilities[i] if probabilities else 0.8, gamma)
-
-        # Final score combines sunk cost bias and prospect theory
-        final_score = sunk_cost_score + value * probability
-        updated_scores.append(final_score)
-
-    return updated_scores
-
-
-def sunk_cost_utility(agent_payoff):
-    """
-    Adjust score based on sunk cost bias. Higher investments result in higher perceived value.
-    """
-    return agent_payoff * 1.5  # Example: Increase score for greater investment in an action
+    # Step 1: Generate previous investments using LLM command list
+    num_candidates = len(response_candidates)
+    previous_investments = generate_previous_investments(num_candidates)
+    
+    # Step 2: Apply sunk cost bias: higher investments should lead to higher scores
+    adjusted_scores = []
+    for i, score in enumerate(score_lists):
+        investment = previous_investments[i]
+        adjusted_score = score + (investment * 0.1)  # Example: larger investment increases score
+        adjusted_scores.append(adjusted_score)
+    
+    return adjusted_scores
