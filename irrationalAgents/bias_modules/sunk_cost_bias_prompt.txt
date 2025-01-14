@@ -1,0 +1,7 @@
+Agent Profile: {agent_profile}
+Current Emotion: {current_emotion}
+Conversation History: {previous}
+
+Evaluate the sunk cost effect:
+- Consider how prior investments (time, effort, resources) might influence the agent's decisions.
+- Return a metric indicating the likelihood of continuing with the current choice due to sunk costs.
