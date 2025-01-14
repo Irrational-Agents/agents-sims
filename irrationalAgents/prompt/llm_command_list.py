@@ -212,85 +212,83 @@ def get_llm_responses_and_scores_and_outcome(conversation):
 
 
 @traceable(name="generate_risk_aversion")#Holt, C. A., & Laury, S. K. (2002). Risk aversion and incentive effects. American Economic Review, 92(5), 1644-1655.
-def generate_risk_aversion():
-    with open('irrationalAgents/prompt/prompt_templates/risk_aversion_prompt.txt', 'r') as file:
+def generate_risk_aversion(agent_profile, current_emotion):
+    with open('irrationalAgents/prompt/prompt_templates/risk_preference_prompt.txt', 'r') as file:
         prompt_template = file.read()
     
-    prompt = prompt_template.format()  # No variables to format here
+    prompt = prompt_template.format(agent_profile=agent_profile, current_emotion=current_emotion)
     
-    # Generate the risk aversion value
-    risk_aversion_value = round(random.uniform(0.5, 1.0), 2)
+    # Send prompt to LLM for dynamic risk aversion calculation
+    response = generative_agent(prompt)  # Calls LLM model (e.g., GPT-3/4, etc.)
     
-    # Generate response
-    response = generative_agent(prompt)
-    print(response)
+    # Parse the response to extract risk aversion value
+    risk_aversion_value = float(response['risk_aversion'])  # Extracted from LLM's response
     
     return risk_aversion_value
 
+
 @traceable(name="generate_ownership_status") #Reference: Thaler, R. H. (1980). Toward a positive theory of consumer choice. Journal of Economic Behavior & Organization, 1(1), 39-60.This paper discusses the endowment effect, where individuals tend to assign a higher value to things they own compared to identical things they don't own, leading to biased decision-making.
 
-def generate_ownership_status(num_candidates):
-    with open('irrationalAgents/prompt/prompt_templates/ownership_status_prompt.txt', 'r') as file:
+def generate_ownership_status(agent_profile, num_candidates):
+    with open('irrationalAgents/prompt/prompt_templates/endowment_bias_prompt.txt', 'r') as file:
         prompt_template = file.read()
     
-    prompt = prompt_template.format(num_candidates=num_candidates)
+    prompt = prompt_template.format(agent_profile=agent_profile, num_candidates=num_candidates)
     
-    # Generate ownership status
-    ownership_status = [0] * num_candidates
-    owned_index = random.randint(0, num_candidates - 1)
-    ownership_status[owned_index] = 1
+    # Send prompt to LLM for dynamic ownership status calculation
+    response = generative_agent(prompt)  # Calls LLM model (e.g., GPT-3/4, etc.)
     
-    # Generate response
-    response = generative_agent(prompt)
-    print(response)
+    # Parse the response to extract ownership status
+    ownership_status = [int(val) for val in response['ownership_status']]  # Extracted from LLM's response
     
     return ownership_status
 
+
 @traceable(name="generate_previous_investments")#Arkes, H. R., & Blumer, C. (1985). The psychology of sunk cost. Organizational Behavior and Human Decision Processes, 35(1), 124-140.This paper describes how individuals are often irrationally influenced by sunk costs, resulting in decisions that are biased by past investments.
-def generate_previous_investments(num_candidates):
-    with open('irrationalAgents/prompt/prompt_templates/previous_investments_prompt.txt', 'r') as file:
+def generate_previous_investments(agent_profile, num_candidates):
+    with open('irrationalAgents/prompt/prompt_templates/sunk_cost_prompt.txt', 'r') as file:
         prompt_template = file.read()
     
-    prompt = prompt_template.format(num_candidates=num_candidates)
+    prompt = prompt_template.format(agent_profile=agent_profile, num_candidates=num_candidates)
     
-    # Generate previous investments
-    previous_investments = [random.randint(5, 25) for _ in range(num_candidates)]
+    # Send prompt to LLM for dynamic previous investment calculation
+    response = generative_agent(prompt)  # Calls LLM model (e.g., GPT-3/4, etc.)
     
-    # Generate response
-    response = generative_agent(prompt)
-    print(response)
+    # Parse the response to extract previous investments
+    previous_investments = [int(val) for val in response['previous_investments']]  # Extracted from LLM's response
     
     return previous_investments
 
-@traceable(name="generate_initial_scores")
-def generate_initial_scores(num_candidates):
-    with open('irrationalAgents/prompt/prompt_templates/initial_scores_prompt.txt', 'r') as file:
-        prompt_template = file.read()
-    
-    prompt = prompt_template.format(num_candidates=num_candidates)
-    
-    # Generate initial scores
-    initial_scores = [random.randint(40, 80) for _ in range(num_candidates)]
-    
-    # Generate response
-    response = generative_agent(prompt)
-    print(response)
-    
-    return initial_scores
 
-@traceable(name="generate_response_values") #These values likely represent the perceived benefit of each option or subjective utility, with higher values indicating more preferred choices.
-def generate_response_values(num_candidates):
-    with open('irrationalAgents/prompt/prompt_templates/response_values_prompt.txt', 'r') as file:
+@traceable(name="generate_fairness_parameters")  # Fairness prompt generation
+def generate_fairness_parameters(agent_profile, current_emotion):
+    with open('irrationalAgents/prompt/prompt_templates/fairness_bias_prompt.txt', 'r') as file:
         prompt_template = file.read()
     
-    prompt = prompt_template.format(num_candidates=num_candidates)
+    prompt = prompt_template.format(agent_profile=agent_profile, current_emotion=current_emotion)
     
-    # Generate response values
-    response_values = [random.randint(30, 90) for _ in range(num_candidates)]
+    # Send prompt to LLM for dynamic calculation of alpha and beta
+    response = generative_agent(prompt)  # Calls LLM model (e.g., GPT-3/4, etc.)
     
-    # Generate response
-    response = generative_agent(prompt)
-    print(response)
+    # Parse the response to extract alpha and beta values
+    alpha = float(response['alpha'])  # Extracted from LLM's response
+    beta = float(response['beta'])  # Extracted from LLM's response
     
-    return response_values
+    return {'alpha': alpha, 'beta': beta}
+
+@traceable(name="generate_dynamic_anchor")  # Anchoring prompt generation
+def generate_dynamic_anchor(conversation_history):
+    with open('irrationalAgents/prompt/prompt_templates/anchoring_bias_prompt.txt', 'r') as file:
+        prompt_template = file.read()
+    
+    prompt = prompt_template.format(conversation_history=conversation_history)
+    
+    # Send prompt to LLM for dynamic anchor calculation
+    response = generative_agent(prompt)  # Calls LLM model (e.g., GPT-3/4, etc.)
+    
+    # Parse the response to extract the anchor value
+    anchor = float(response['anchor'])  # Extracted from LLM's response
+    
+    return anchor
+
 
