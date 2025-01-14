@@ -4,6 +4,7 @@ import json
 import logging
 from langsmith import traceable
 from langsmith.wrappers import wrap_openai
+import random
 
 logger = logging.getLogger(__name__)
 api_key = os.getenv('OPENAI_API_KEY')
@@ -207,3 +208,89 @@ def get_llm_responses_and_scores_and_outcome(conversation):
     print("Error: Invalid JSON format in response.")
     return None
     
+
+
+
+@traceable(name="generate_risk_aversion")#Holt, C. A., & Laury, S. K. (2002). Risk aversion and incentive effects. American Economic Review, 92(5), 1644-1655.
+def generate_risk_aversion():
+    with open('irrationalAgents/prompt/prompt_templates/risk_aversion_prompt.txt', 'r') as file:
+        prompt_template = file.read()
+    
+    prompt = prompt_template.format()  # No variables to format here
+    
+    # Generate the risk aversion value
+    risk_aversion_value = round(random.uniform(0.5, 1.0), 2)
+    
+    # Generate response
+    response = generative_agent(prompt)
+    print(response)
+    
+    return risk_aversion_value
+
+@traceable(name="generate_ownership_status") #Reference: Thaler, R. H. (1980). Toward a positive theory of consumer choice. Journal of Economic Behavior & Organization, 1(1), 39-60.This paper discusses the endowment effect, where individuals tend to assign a higher value to things they own compared to identical things they don't own, leading to biased decision-making.
+
+def generate_ownership_status(num_candidates):
+    with open('irrationalAgents/prompt/prompt_templates/ownership_status_prompt.txt', 'r') as file:
+        prompt_template = file.read()
+    
+    prompt = prompt_template.format(num_candidates=num_candidates)
+    
+    # Generate ownership status
+    ownership_status = [0] * num_candidates
+    owned_index = random.randint(0, num_candidates - 1)
+    ownership_status[owned_index] = 1
+    
+    # Generate response
+    response = generative_agent(prompt)
+    print(response)
+    
+    return ownership_status
+
+@traceable(name="generate_previous_investments")#Arkes, H. R., & Blumer, C. (1985). The psychology of sunk cost. Organizational Behavior and Human Decision Processes, 35(1), 124-140.This paper describes how individuals are often irrationally influenced by sunk costs, resulting in decisions that are biased by past investments.
+def generate_previous_investments(num_candidates):
+    with open('irrationalAgents/prompt/prompt_templates/previous_investments_prompt.txt', 'r') as file:
+        prompt_template = file.read()
+    
+    prompt = prompt_template.format(num_candidates=num_candidates)
+    
+    # Generate previous investments
+    previous_investments = [random.randint(5, 25) for _ in range(num_candidates)]
+    
+    # Generate response
+    response = generative_agent(prompt)
+    print(response)
+    
+    return previous_investments
+
+@traceable(name="generate_initial_scores")
+def generate_initial_scores(num_candidates):
+    with open('irrationalAgents/prompt/prompt_templates/initial_scores_prompt.txt', 'r') as file:
+        prompt_template = file.read()
+    
+    prompt = prompt_template.format(num_candidates=num_candidates)
+    
+    # Generate initial scores
+    initial_scores = [random.randint(40, 80) for _ in range(num_candidates)]
+    
+    # Generate response
+    response = generative_agent(prompt)
+    print(response)
+    
+    return initial_scores
+
+@traceable(name="generate_response_values") #These values likely represent the perceived benefit of each option or subjective utility, with higher values indicating more preferred choices.
+def generate_response_values(num_candidates):
+    with open('irrationalAgents/prompt/prompt_templates/response_values_prompt.txt', 'r') as file:
+        prompt_template = file.read()
+    
+    prompt = prompt_template.format(num_candidates=num_candidates)
+    
+    # Generate response values
+    response_values = [random.randint(30, 90) for _ in range(num_candidates)]
+    
+    # Generate response
+    response = generative_agent(prompt)
+    print(response)
+    
+    return response_values
+
