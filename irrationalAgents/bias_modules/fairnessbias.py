@@ -1,4 +1,4 @@
-from llm_command_list import *
+from prompt.llm_command_list import *
 import random
 
 def fairness_bias(agent_profile, current_emotion, conversation_history, response_candidates, score_lists):
