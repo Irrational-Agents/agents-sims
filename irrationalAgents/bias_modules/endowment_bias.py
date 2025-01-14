@@ -1,20 +1,39 @@
-# endowment_bias.py
-def endowment_bias_module(response_candidates, score_lists, ownership_status):
+from prompt.llm_command_list import get_llm_responses_and_scores_and_outcome
+
+def endowment_bias_module(personality, emotion, conversation_history, response_candidates, score_lists):
     """
-    Adjust decision scores based on endowment bias, considering whether the agent owns the item.
-    
-    Arguments:
-    - response_candidates: List of response options for the agent to choose from.
-    - score_lists: Initial scores for each response option.
-    - ownership_status: A list indicating whether the agent owns the item (1 = owns, 0 = does not own).
-    
-    Returns:
-    - Updated scores list with Endowment Bias adjustments applied.
+    Adjust scores based on Endowment Bias, considering personality, emotion, and Prospect Theory.
     """
+    # Step 1: Fetch responses, probabilities, and outcomes dynamically
+    candidate_responses, probabilities, outcomes = get_llm_responses_and_scores_and_outcome(conversation_history)
+
+    # Step 2: Set fallback for outcomes if necessary
+    other_payoffs = outcomes if outcomes else [10, 20, 15]
+
+    # Step 3: Determine parameters based on personality and emotion
+    alpha, beta, gamma, lambda_ = determine_parameters(emotion, personality)
+
+    # Step 4: Adjust based on endowment effect (ownership increases value)
     updated_scores = []
     for i, response in enumerate(response_candidates):
-        # Apply endowment bias: if the agent owns the item, they value it more highly
-        endowment_adjustment = score_lists[i] * (1 + ownership_status[i] * 0.2)  # 20% boost for owned items
-        updated_scores.append(endowment_adjustment)
-    
+        agent_payoff = score_lists[i]  # Agent's payoff is the initial score
+
+        # Endowment bias adjustment (higher score for items owned)
+        endowment_score = endowment_utility(agent_payoff)
+
+        # Prospect theory adjustment
+        value = prospect_theory_value(score_lists[i], alpha, beta, lambda_)
+        probability = probability_weighting(probabilities[i] if probabilities else 0.8, gamma)
+
+        # Final score combines endowment bias and prospect theory
+        final_score = endowment_score + value * probability
+        updated_scores.append(final_score)
+
     return updated_scores
+
+
+def endowment_utility(agent_payoff):
+    """
+    Adjust score based on the endowment effect. Ownership increases perceived value.
+    """
+    return agent_payoff * 1.2  # Example: Increase score for owned items
